@@ -1431,7 +1431,8 @@ void AddBattlegroundScripts()
 // start18
 // start19
 // start20
-// start21
+// Killstreak
+void AddSC_PvP_System();
 // start22
 // start23
 // start24
@@ -1557,7 +1558,8 @@ void AddCustomScripts()
 // end18
 // end19
 // end20
-// end21
+    // Killstreak
+    AddSC_PvP_System();
 // end22
 // end23
 // end24
