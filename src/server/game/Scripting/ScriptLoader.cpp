@@ -1491,7 +1491,7 @@ void AddBattlegroundScripts()
 // start78
 // start79
 // start80
-// start81
+void AddSC_World_Chat();
 // start82
 // start83
 // start84
@@ -1617,7 +1617,7 @@ void AddCustomScripts()
 // end78
 // end79
 // end80
-// end81
+    AddSC_World_Chat();
 // end82
 // end83
 // end84
