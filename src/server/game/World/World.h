@@ -163,7 +163,8 @@ enum WorldBoolConfigs
     // Prepatch by LordPsyan
     // 01
     // 02
-    // 03
+    CONFIG_NO_CAST_TIME,
+    CONFIG_HURT_IN_REAL_TIME,
     // 04
     // 05
     // 06
@@ -171,7 +172,7 @@ enum WorldBoolConfigs
     // 08
     // 09
     // 10
-    // 11
+    CONFIG_FAST_FISHING,
     // 12
     // 13
     // 14
@@ -212,15 +213,16 @@ enum WorldFloatConfigs
     // Prepatch by LordPsyan
     // 21
     // 22
-    // 23
+    CONFIG_SPEED_GAME,
     // 24
     // 25
     // 26
-    // 27
+    CONFIG_ATTACKSPEED_PLAYER,
+    CONFIG_ATTACKSPEED_ALL,
     // 28
     // 29
     // 30
-    // 31
+    CONFIG_RESPAWNSPEED,
     // 32
     // 33
     // 34
