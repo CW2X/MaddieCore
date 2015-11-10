@@ -1415,7 +1415,8 @@ void AddBattlegroundScripts()
 // start02
 // start03
 // start04
-// start05
+// Arena Gambler
+void AddSC_ArenaGambler();
 // start06
 // start07
 // start08
@@ -1541,7 +1542,8 @@ void AddCustomScripts()
 // end02
 // end03
 // end04
-// end05
+    // Arena Gambler
+    AddSC_ArenaGambler();
 // end06
 // end07
 // end08
