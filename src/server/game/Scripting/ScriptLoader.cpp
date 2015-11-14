@@ -1415,6 +1415,7 @@ void AddBattlegroundScripts()
 void AddSC_REFORGER_NPC();
 void AddSC_PWS_Transmogrification();
 void AddSC_CS_Transmogrification();
+void AddSC_GOMove_commandscript();
 #endif
 
 void AddCustomScripts()
@@ -1425,5 +1426,6 @@ void AddCustomScripts()
     AddSC_REFORGER_NPC();
     AddSC_PWS_Transmogrification();
     AddSC_CS_Transmogrification();
+    AddSC_GOMove_commandscript();
 #endif
 }

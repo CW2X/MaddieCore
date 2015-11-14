@@ -17,6 +17,8 @@ set(scripts_STAT_SRCS
     Custom/Transmog/Transmogrification.h
     Custom/Transmog/Transmogrification.cpp
     Custom/Transmog/Transmogrifier.cpp
+  Custom/GOMove/GOMove.cpp
+  Custom/GOMove/GOMove.h
 )
 
 message("  -> Prepared: Custom")
