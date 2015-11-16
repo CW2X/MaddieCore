@@ -1510,7 +1510,8 @@ void AddSC_npc_teleport();
 // start82
 // start83
 // start84
-// start85
+    //Vas AutoBalance
+    void AddSC_VAS_AutoBalance();
 // start86
 // start87
 // start88
@@ -1653,7 +1654,8 @@ void AddCustomScripts()
 // end82
 // end83
 // end84
-// end85
+    //VAS AutoBalance
+    AddSC_VAS_AutoBalance();
 // end86
 // end87
 // end88
