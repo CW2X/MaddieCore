@@ -395,6 +395,7 @@ public:
                         case EVENT_SHIFT_TALK:
                             Talk(SAY_ELECT);
                             Talk(EMOTE_POLARITY_SHIFTED);
+                            break;
                         case EVENT_CHAIN:
                             if (me->FindCurrentSpellBySpellId(SPELL_POLARITY_SHIFT)) // delay until shift is over
                                 events.ScheduleEvent(EVENT_CHAIN, 3 * IN_MILLISECONDS, 0, PHASE_THADDIUS);
@@ -539,6 +540,7 @@ public:
                         if (Creature* coil = myCoil())
                             if (Creature* thaddius = ObjectAccessor::GetCreature(*me, instance->GetGuidData(DATA_THADDIUS)))
                                 coil->CastSpell(thaddius, SPELL_SHOCK_VISUAL);
+                        break;
                     case ACTION_TRANSITION_3:
                         if (GameObject* coil = myCoilGO())
                             coil->SetGoState(GO_STATE_READY);
@@ -808,6 +810,7 @@ public:
                         if (Creature* coil = myCoil())
                             if (Creature* thaddius = ObjectAccessor::GetCreature(*me, instance->GetGuidData(DATA_THADDIUS)))
                                 coil->CastSpell(thaddius, SPELL_SHOCK_VISUAL);
+                        break;
                     case ACTION_TRANSITION_3:
                         if (GameObject* coil = myCoilGO())
                             coil->SetGoState(GO_STATE_READY);
@@ -981,12 +984,12 @@ public:
 
     struct npc_teslaAI : public ScriptedAI
     {
-        public:
-            npc_teslaAI(Creature* creature) : ScriptedAI(creature) { }
-            void EnterEvadeMode() override { } // never stop casting due to evade
-            void UpdateAI(uint32 /*diff*/) override { } // never do anything unless told
-            void EnterCombat(Unit* /*who*/) override { }
-            void DamageTaken(Unit* /*who*/, uint32& damage) { damage = 0; } // no, you can't kill it
+        npc_teslaAI(Creature* creature) : ScriptedAI(creature) { }
+
+        void EnterEvadeMode() override { } // never stop casting due to evade
+        void UpdateAI(uint32 /*diff*/) override { } // never do anything unless told
+        void EnterCombat(Unit* /*who*/) override { }
+        void DamageTaken(Unit* /*who*/, uint32& damage) override { damage = 0; } // no, you can't kill it
     };
 };
 
@@ -1018,7 +1021,7 @@ class spell_thaddius_polarity_charge : public SpellScriptLoader
                     return;
 
                 uint32 triggeringId = GetTriggeringSpell()->Id;
-                uint32 ampId = 0u;
+                uint32 ampId;
                 switch (triggeringId)
                 {
                     case SPELL_POSITIVE_CHARGE_APPLY:
