@@ -1153,7 +1153,8 @@ void World::LoadConfigSettings(bool reload)
     // 08
     // 09
     // 10
-    // 11
+    m_bool_configs[CONFIG_GAIN_HONOR_GUARD] = sConfigMgr->GetBoolDefault("Custom.GainHonorOnGuardKill", false);
+    m_bool_configs[CONFIG_GAIN_HONOR_ELITE] = sConfigMgr->GetBoolDefault("Custom.GainHonorOnEliteKill", false);
     // 12
     // 13
     // 14

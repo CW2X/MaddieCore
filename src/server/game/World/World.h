@@ -181,7 +181,8 @@ enum WorldBoolConfigs
     // 16
     // 17
     // 18
-    // 19
+    CONFIG_GAIN_HONOR_GUARD,
+    CONFIG_GAIN_HONOR_ELITE,
     // 20
     // Visit http://www.realmsofwarcraft.com/bb for forums and information
     //
