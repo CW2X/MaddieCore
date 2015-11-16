@@ -688,6 +688,9 @@ void AddSC_outdoorpvp_zm();
 // player
 void AddSC_chat_log();
 void AddSC_action_ip_logger();
+
+// Chat Filter
+void AddSC_chat_filter_playerscript();
 #endif
 
 void AddScripts()
@@ -787,6 +790,7 @@ void AddWorldScripts()
     AddSC_achievement_scripts();
     AddSC_chat_log(); // location: scripts\World\chat_log.cpp
     // To avoid duplicate code, we check once /*ONLY*/ if logging is permitted or not.
+	AddSC_chat_filter_playerscript();
     if (sWorld->getBoolConfig(CONFIG_IP_BASED_ACTION_LOGGING))
         AddSC_action_ip_logger(); // location: scripts\World\action_ip_logger.cpp
     AddSC_duel_reset();
@@ -1418,8 +1422,6 @@ void AddBattlegroundScripts()
 // start02
 // start03
 // start04
-// Arena Gambler
-void AddSC_ArenaGambler();
 // start06
 // start07
 // start08
@@ -1562,8 +1564,6 @@ void AddCustomScripts()
 // end02
 // end03
 // end04
-    // Arena Gambler
-    AddSC_ArenaGambler();
 // end06
 // end07
 // end08

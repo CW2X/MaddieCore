@@ -704,6 +704,8 @@ class ObjectMgr
 
         typedef std::vector<std::string> ScriptNameContainer;
 
+		typedef std::vector<std::pair<std::string, uint32> > ChatFilterContainer; 
+
         typedef std::map<uint32, uint32> CharacterConversionMap;
 
         Player* GetPlayerByLowGUID(ObjectGuid::LowType lowguid) const;
@@ -1033,6 +1035,9 @@ class ObjectMgr
         void LoadQuestPOI();
 
         void LoadNPCSpellClickSpells();
+
+		void LoadChatFilter();
+		ChatFilterContainer& GetCensoredWords() { return _chatFilterStore; }
 
         void LoadGameTele();
 
@@ -1388,6 +1393,8 @@ class ObjectMgr
         ScriptNameContainer _scriptNamesStore;
 
         SpellClickInfoContainer _spellClickInfoStore;
+
+		ChatFilterContainer _chatFilterStore;
 
         SpellScriptsContainer _spellScriptsStore;
 
