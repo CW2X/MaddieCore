@@ -700,6 +700,30 @@ enum RBACPermissions
     // custom permissions 1000+
     RBAC_PERM_COMMAND_GOBJECT_SET_SCALE                      = 1398,
     RBAC_PERM_COMMAND_NPC_SET_SCALE                          = 1589,
+    // Prepatch by LordPsyan
+    // 01
+    // 02
+    // 03
+    // 04
+    // 05
+    // 06
+    // 07
+    // 08
+    // 09
+    // 10
+    // 11
+    // 12
+    // 13
+    // 14
+    // 15
+    // 16
+    // 17
+    // 18
+    // 19
+    // 20
+    // Visit http://www.realmsofwarcraft.com/bb for forums and information
+    //
+    // End of prepatch
     RBAC_PERM_MAX
 };
 

@@ -685,7 +685,6 @@ void AddSC_outdoorpvp_zm();
 // player
 void AddSC_chat_log();
 void AddSC_action_ip_logger();
-
 #endif
 
 void AddScripts()
@@ -1411,7 +1410,134 @@ void AddBattlegroundScripts()
 
 #ifdef SCRIPTS
 /* This is where custom scripts' loading functions should be declared. */
-
+    // All In One NPC
+    void AddSC_npc_all();
+// start02
+// start03
+// start04
+// start05
+// start06
+// start07
+// start08
+    // Beastmaster
+    void AddSC_Npc_Beastmaster();
+// start10
+// start11
+// start12
+    // Bounty Hunter
+    void AddSC_BountyHunter();
+// start14
+// start15
+// start16
+// start17
+// start18
+// start19
+// start20
+// start21
+// start22
+// start23
+// start24
+    // Level NPC
+    void AddSC_levelnpc();
+// start26
+// start27
+// start28
+    // Lottery NPC
+    void AddSC_npc_lottery();
+// start30
+// start31
+// start32
+    // Buff NPC
+    void AddSC_Npc_Buff();
+// start34
+// start35
+// start36
+    // Enchant NPC
+    void AddSC_npc_enchantment();
+// start38
+// start39
+// start40
+// start41
+// start42
+// start43
+// start44
+    // Profession Npc
+    void AddSC_professionnpc();
+// start46
+// start47
+// start48
+// start49
+// start50
+// start51
+// start52
+// start53
+// start54
+// start55
+// start56
+// start57
+// start58
+// start59
+// start60
+// start61
+// start62
+// start63
+// start64
+// start65
+// start66
+// start67
+// start68
+// start69
+// start70
+// start71
+// start72
+// start73
+// start74
+// start75
+// start76
+// start77
+// start78
+// start79
+// start80
+// start81
+// start82
+// start83
+// start84
+// start85
+// start86
+// start87
+// start88
+// start89
+// start90
+// start91
+// start92
+// start93
+// start94
+// start95
+// start96
+// start97
+// start98
+// start99
+// start100
+// start101
+// start102
+// start103
+// start104
+// start105
+// start106
+// start107
+// start108
+// start109
+// start100
+// start111
+// start112
+// start113
+// start114
+// start115
+// start116
+// start117
+// start118
+// start119
+// start120
 void AddSC_REFORGER_NPC();
 void AddSC_PWS_Transmogrification();
 void AddSC_CS_Transmogrification();
@@ -1422,7 +1548,134 @@ void AddCustomScripts()
 {
 #ifdef SCRIPTS
     /* This is where custom scripts should be added. */
-
+    // All In One NPC
+    AddSC_npc_all();
+// end02
+// end03
+// end04
+// end05
+// end06
+// end07
+// end08
+    // Beastmaster
+    AddSC_Npc_Beastmaster();
+// end10
+// end11
+// end12
+    // Bounty Hunter
+    AddSC_BountyHunter();
+// end14
+// end15
+// end16
+// end17
+// end18
+// end19
+// end20
+// end21
+// end22
+// end23
+// end24
+    // Level NPC
+    AddSC_levelnpc();
+// end26
+// end27
+// end28
+    // Lottery NPC
+    AddSC_npc_lottery();
+// end30
+// end31
+// end32
+    // Buff NPC
+    AddSC_Npc_Buff();
+// end34
+// end35
+// end36
+    // Enchant NPC
+    AddSC_npc_enchantment();
+// end38
+// end39
+// end40
+// end41
+// end42
+// end43
+// end44
+    // Profession Npc
+    AddSC_professionnpc();
+// end46
+// end47
+// end48
+// end49
+// end50
+// end51
+// end52
+// end53
+// end54
+// end55
+// end56
+// end57
+// end58
+// end59
+// end60
+// end61
+// end62
+// end63
+// end64
+// end65
+// end66
+// end67
+// end68
+// end69
+// end70
+// end71
+// end72
+// end73
+// end74
+// end75
+// end76
+// end77
+// end78
+// end79
+// end80
+// end81
+// end82
+// end83
+// end84
+// end85
+// end86
+// end87
+// end88
+// end89
+// end90
+// end91
+// end92
+// end93
+// end94
+// end95
+// end96
+// end97
+// end98
+// end99
+// end100
+// end101
+// end102
+// end103
+// end104
+// end105
+// end106
+// end107
+// end108
+// end109
+// end100
+// end111
+// end112
+// end113
+// end114
+// end115
+// end116
+// end117
+// end118
+// end119
+// end120
     AddSC_REFORGER_NPC();
     AddSC_PWS_Transmogrification();
     AddSC_CS_Transmogrification();
