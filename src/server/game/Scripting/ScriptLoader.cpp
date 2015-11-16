@@ -1430,7 +1430,8 @@ void AddSC_ArenaGambler();
 // start14
 // start15
 // start16
-// start17
+    //GuildHouse NPC
+    void AddSC_guildmaster();
 // start18
 // start19
 // start20
@@ -1569,7 +1570,8 @@ void AddCustomScripts()
 // end14
 // end15
 // end16
-// end17
+    // GuildHouse NPC
+    AddSC_guildmaster();
 // end18
 // end19
 // end20
