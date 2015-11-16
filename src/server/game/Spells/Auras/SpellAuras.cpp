@@ -1561,7 +1561,37 @@ void Aura::HandleAuraSpecificMods(AuraApplication const* aurApp, Unit* caster, b
                 // Remove Vanish on stealth remove
                 if (GetId() == 1784)
                     target->RemoveAurasWithFamily(SPELLFAMILY_ROGUE, 0x0000800, 0, 0, target->GetGUID());
-                break;
+			
+				switch (GetId())
+					 {
+					case 1784:
+						case 115191:
+							case 11327:
+								{
+									                    // Enhanced Stealth
+										if (const AuraEffect* aurEff = target->GetAuraEffect(157704, EFFECT_0))
+										 {
+										if (!apply)
+											 {
+											SpellInfo const* timer = sSpellMgr->GetSpellInfo(31666);
+											target->CastSpell(target, 31666, true);
+											if (Aura* damageAura = target->GetAura(31665))
+												 {
+												damageAura->SetDuration(timer->GetMaxDuration());
+												damageAura->SetMaxDuration(timer->GetMaxDuration());
+												}
+											}
+										else
+											 {
+											int32 basepoints0 = aurEff->GetAmount();
+											target->CastCustomSpell(target, 31665, &basepoints0, NULL, NULL, true);
+											}
+										}
+									break;
+									}
+								}
+				break;
+				break;
             case SPELLFAMILY_PALADIN:
                 // Remove the immunity shield marker on Forbearance removal if AW marker is not present
                 if (GetId() == 25771 && target->HasAura(61988) && !target->HasAura(61987))
