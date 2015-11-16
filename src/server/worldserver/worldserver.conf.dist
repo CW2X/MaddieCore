@@ -3480,6 +3480,7 @@ PacketSpoof.BanDuration = 86400
 ###################################################################################################
 #    Transmogrification config
 ###################################################################################################
+###################################################################################################
 #
 #    SETTINGS
 #
@@ -3815,6 +3816,79 @@ ProfessionNPC.UseTokens = 1
 #                 = n (n = entry number of item)
 
 ProfessionNPC.ItemEntryNum = 99999
+
+#
+###################################################################################################
+
+#
+# Custom.SpeedGame
+# Set it to a number upper than 1 to speed up realm timer
+# Default : 1 (Real Time)
+# Example : 60 to force 1scde (real time) = 1 minute (realm timer)
+#
+
+Custom.SpeedGame = 1
+
+#
+# Custom.NoCastTime
+# Set it to 1 to disable cast time
+# Default : 0 (Cast Time Enable)
+#
+
+Custom.NoCastTime = 0
+
+#
+# Custom.HurtInRealTime
+# Set it to 1 to disable autohurt with weapon
+# Default : 0 (Autohurt Enable)
+#
+
+Custom.HurtInRealTime = 0
+
+#
+###################################################################################################
+
+###################################################################################################
+#
+# Custom.FastFishing
+# Set it to 1 to make fishing a lot faster!
+# Default : 0 (Fishing is normal)
+#
+
+Custom.FastFishing = 0
+
+#
+###################################################################################################
+
+###################################################################################################
+#
+# Custom.RespawnSpeed
+# Set it to a number upper than 1 to speed up the respawn of mobs (and lower than 1 to slow down).
+# Default : 1.0 (Normal speed)
+#
+
+Custom.RespawnSpeed = 1.0
+
+#
+###################################################################################################
+
+#
+# Custom.AttackSpeedForPlayer
+# Set it to a number upper than 1 to speed up the attack of the player
+# Default : 1.0 (Normal speed)
+# Example : 2.0 (Player attack speed is 200% faster)
+#
+
+Custom.AttackSpeedForPlayer = 1.0
+
+#
+# Custom.AttackSpeedForMobs
+# Set it to a number upper than 1 to speed up the attack of the mobs
+# Default : 1.0 (Normal speed)
+# Example : 0.5 (Mobs attack speed is 50% slower)
+#
+
+Custom.AttackSpeedForMobs = 1.0
 
 #
 ###################################################################################################

@@ -1141,11 +1141,13 @@ void World::LoadConfigSettings(bool reload)
     // Prepatch by LordPsyan
     // 01
     // 02
-    // 03
+    m_float_configs[CONFIG_SPEED_GAME] = sConfigMgr->GetFloatDefault("Custom.SpeedGame", 1.0f);
+    m_bool_configs[CONFIG_NO_CAST_TIME] = sConfigMgr->GetBoolDefault("Custom.NoCastTime", false);
+    m_bool_configs[CONFIG_HURT_IN_REAL_TIME] = sConfigMgr->GetBoolDefault("Custom.HurtInRealTime", false);
     // 04
     // 05
     // 06
-    // 07
+    m_bool_configs[CONFIG_FAST_FISHING] = sConfigMgr->GetBoolDefault("Custom.FastFishing", false);
     // 08
     // 09
     // 10
@@ -1153,12 +1155,13 @@ void World::LoadConfigSettings(bool reload)
     // 12
     // 13
     // 14
-    // 15
+    m_float_configs[CONFIG_ATTACKSPEED_PLAYER] = sConfigMgr->GetFloatDefault("Custom.AttackSpeedForPlayer", 1.0f);
+    m_float_configs[CONFIG_ATTACKSPEED_ALL] = sConfigMgr->GetFloatDefault("Custom.AttackSpeedForMobs", 1.0f);
     // 16
     // 17
     // 18
     // 19
-    // 20
+    m_float_configs[CONFIG_RESPAWNSPEED] = sConfigMgr->GetFloatDefault("Custom.RespawnSpeed", 1.0f);
     // Visit http://www.realmsofwarcraft.com/bb for forums and information
     //
     // End of prepatch
