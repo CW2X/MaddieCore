@@ -1,4 +1,6 @@
+-- "Fix" quest 5713 (One shot. One kill.).
 
+Made it a kill quest since I could not manage to get a script working for it.
 UPDATE `world`.`quest_template` 
 	SET
 	
