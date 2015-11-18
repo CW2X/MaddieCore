@@ -191,4 +191,12 @@ INSERT INTO `gameobject` (`guid`,`id`,`map`,`spawnMask`,`phaseMask`,`position_x`
 ('500019','183322','1','1','1','16198.1','16229.1','2.40509','2.13858','0','0','0.87686','0.480746','300','0','1'),
 ('500020','183317','1','1','1','16197.1','16233','4.17257','0.249685','0','0','0.124519','0.992217','300','0','1');
 
+
+-- barber chair
+
 insert  into `gameobject`(`guid`,`id`,`map`,`zoneId`,`areaId`,`spawnMask`,`phaseMask`,`position_x`,`position_y`,`position_z`,`orientation`,`rotation0`,`rotation1`,`rotation2`,`rotation3`,`spawntimesecs`,`animprogress`,`state`,`VerifiedBuild`,`size`) values (500120,191030,1,0,0,1,1,16224,16295.2,21.1531,6.18182,0,0,0.0506627,-0.998716,300,0,1,0,-1);
+
+-- stove 
+
+insert  into `gameobject_copy`(`guid`,`id`,`map`,`zoneId`,`areaId`,`spawnMask`,`phaseMask`,`position_x`,`position_y`,`position_z`,`orientation`,`rotation0`,`rotation1`,`rotation2`,`rotation3`,`spawntimesecs`,`animprogress`,`state`,`VerifiedBuild`,`size`) values (9365298,193172,1,0,0,1,1,16224.1,16299.1,20.8558,6.17894,0,0,0.0520968,-0.998642,300,0,1,0,-1);
+
