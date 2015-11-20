@@ -87,10 +87,12 @@ public:
             { "creature_queststarter",         rbac::RBAC_PERM_COMMAND_RELOAD_CREATURE_QUESTSTARTER,            true,  &HandleReloadCreatureQuestStarterCommand,       "" },
             { "creature_summon_groups",        rbac::RBAC_PERM_COMMAND_RELOAD_CREATURE_SUMMON_GROUPS,           true,  &HandleReloadCreatureSummonGroupsCommand,       "" },
             { "creature_template",             rbac::RBAC_PERM_COMMAND_RELOAD_CREATURE_TEMPLATE,                true,  &HandleReloadCreatureTemplateCommand,           "" },
+			{ "creautre_template_addon",       rbac::RBAC_PERM_COMMAND_RELOAD_CREATURE_TEMPLATE_ADDON,          true,  &HandleReloadCreatureTemplateAddonCommand,      "" },
             { "disables",                      rbac::RBAC_PERM_COMMAND_RELOAD_DISABLES,                         true,  &HandleReloadDisablesCommand,                   "" },
             { "disenchant_loot_template",      rbac::RBAC_PERM_COMMAND_RELOAD_DISENCHANT_LOOT_TEMPLATE,         true,  &HandleReloadLootTemplatesDisenchantCommand,    "" },
             { "event_scripts",                 rbac::RBAC_PERM_COMMAND_RELOAD_EVENT_SCRIPTS,                    true,  &HandleReloadEventScriptsCommand,               "" },
-            { "fishing_loot_template",         rbac::RBAC_PERM_COMMAND_RELOAD_FISHING_LOOT_TEMPLATE,            true,  &HandleReloadLootTemplatesFishingCommand,       "" },
+			{ "gameobject_template",           rbac::RBAC_PERM_COMMAND_RELOAD_GAMEOBJECT_TEMPLATE,              true,  &HandleReloadGameobjectTemplateCommand,         "" },
+			{ "fishing_loot_template",         rbac::RBAC_PERM_COMMAND_RELOAD_FISHING_LOOT_TEMPLATE,            true,  &HandleReloadLootTemplatesFishingCommand,       "" },
             { "game_graveyard_zone",           rbac::RBAC_PERM_COMMAND_RELOAD_GAME_GRAVEYARD_ZONE,              true,  &HandleReloadGameGraveyardZoneCommand,          "" },
             { "game_tele",                     rbac::RBAC_PERM_COMMAND_RELOAD_GAME_TELE,                        true,  &HandleReloadGameTeleCommand,                   "" },
             { "gameobject_questender",         rbac::RBAC_PERM_COMMAND_RELOAD_GAMEOBJECT_QUESTENDER,            true,  &HandleReloadGOQuestEnderCommand,               "" },
@@ -102,6 +104,7 @@ public:
             { "item_enchantment_template",     rbac::RBAC_PERM_COMMAND_RELOAD_ITEM_ENCHANTMENT_TEMPLATE,        true,  &HandleReloadItemEnchantementsCommand,          "" },
             { "item_loot_template",            rbac::RBAC_PERM_COMMAND_RELOAD_ITEM_LOOT_TEMPLATE,               true,  &HandleReloadLootTemplatesItemCommand,          "" },
             { "item_set_names",                rbac::RBAC_PERM_COMMAND_RELOAD_ITEM_SET_NAMES,                   true,  &HandleReloadItemSetNamesCommand,               "" },
+			{ "item_template",                 rbac::RBAC_PERM_COMMAND_RELOAD_ITEM_TEMPLATE,                    true,  &HandleReloadItemTemplateCommand,               "" },
             { "lfg_dungeon_rewards",           rbac::RBAC_PERM_COMMAND_RELOAD_LFG_DUNGEON_REWARDS,              true,  &HandleReloadLfgRewardsCommand,                 "" },
             { "locales_achievement_reward",    rbac::RBAC_PERM_COMMAND_RELOAD_LOCALES_ACHIEVEMENT_REWARD,       true,  &HandleReloadLocalesAchievementRewardCommand,   "" },
             { "locales_creature",              rbac::RBAC_PERM_COMMAND_RELOAD_LOCALES_CRETURE,                  true,  &HandleReloadLocalesCreatureCommand,            "" },
@@ -174,6 +177,12 @@ public:
 
     static bool HandleReloadAllCommand(ChatHandler* handler, const char* /*args*/)
     {
+
+		HandleReloadCreatureTemplateCommand(handler, "");
+		HandleReloadCreatureTemplateAddonCommand(handler, "");
+		HandleReloadGameobjectTemplateCommand(handler, "");
+		HandleReloadItemTemplateCommand(handler, "");
+
         HandleReloadSkillFishingBaseLevelCommand(handler, "");
 
         HandleReloadAllAchievementCommand(handler, "");
@@ -418,44 +427,39 @@ public:
         return true;
     }
 
-    static bool HandleReloadCreatureTemplateCommand(ChatHandler* handler, const char* args)
-    {
-        if (!*args)
-            return false;
+	static bool HandleReloadCreatureTemplateAddonCommand(ChatHandler* handler, const char* /*args*/)
+	{
+		TC_LOG_INFO("misc", "Reloading creature template addon...");
+		sObjectMgr->LoadCreatureTemplateAddons();
+		handler->SendGlobalGMSysMessage("DB table `creature_template_addon` reloaded.");
+		return true;
+	}
 
-        Tokenizer entries(std::string(args), ' ');
 
-        for (Tokenizer::const_iterator itr = entries.begin(); itr != entries.end(); ++itr)
-        {
-            uint32 entry = uint32(atoi(*itr));
+	static bool HandleReloadCreatureTemplateCommand(ChatHandler* handler, const char* /*args*/)
+	{
+		TC_LOG_INFO("misc", "Reloading creature template...");
+		sObjectMgr->LoadCreatureTemplates();
+		handler->SendGlobalGMSysMessage("DB table `creature_template` reloaded.");
+		return true;
+	}
 
-            PreparedStatement* stmt = WorldDatabase.GetPreparedStatement(WORLD_SEL_CREATURE_TEMPLATE);
-            stmt->setUInt32(0, entry);
-            PreparedQueryResult result = WorldDatabase.Query(stmt);
+	static bool HandleReloadItemTemplateCommand(ChatHandler* handler, const char* /*args*/)
+	{
+		TC_LOG_INFO("misc", "Reloading item template...");
+		sObjectMgr->LoadItemTemplates();
+		handler->SendGlobalGMSysMessage("DB table `item_template` reloaded.");
+		return true;
+	}
 
-            if (!result)
-            {
-                handler->PSendSysMessage(LANG_COMMAND_CREATURETEMPLATE_NOTFOUND, entry);
-                continue;
-            }
 
-            CreatureTemplate const* cInfo = sObjectMgr->GetCreatureTemplate(entry);
-            if (!cInfo)
-            {
-                handler->PSendSysMessage(LANG_COMMAND_CREATURESTORAGE_NOTFOUND, entry);
-                continue;
-            }
-
-            TC_LOG_INFO("misc", "Reloading creature template entry %u", entry);
-
-            Field* fields = result->Fetch();
-            sObjectMgr->LoadCreatureTemplate(fields);
-            sObjectMgr->CheckCreatureTemplate(cInfo);
-        }
-
-        handler->SendGlobalGMSysMessage("Creature template reloaded.");
-        return true;
-    }
+	static bool HandleReloadGameobjectTemplateCommand(ChatHandler* handler, const char* /*args*/)
+	{
+		TC_LOG_INFO("misc", "Reloading GameObject template...");
+		sObjectMgr->LoadItemTemplates();
+		handler->SendGlobalGMSysMessage("DB table `gameobject_template` reloaded.");
+		return true;
+	}
 
     static bool HandleReloadCreatureQuestStarterCommand(ChatHandler* handler, const char* /*args*/)
     {
@@ -565,6 +569,8 @@ public:
         sConditionMgr->LoadConditions(true);
         return true;
     }
+
+
 
     static bool HandleReloadLootTemplatesGameobjectCommand(ChatHandler* handler, const char* /*args*/)
     {
