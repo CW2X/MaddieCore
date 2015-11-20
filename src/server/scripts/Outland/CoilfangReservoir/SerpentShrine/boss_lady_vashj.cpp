@@ -51,7 +51,7 @@ enum LadyVashj
     SPELL_POISON_BOLT           = 40095,
     SPELL_TOXIC_SPORES          = 38575,
     SPELL_MAGIC_BARRIER         = 38112,
-
+	SPELL_PARALYZE              = 38132,
     SHIED_GENERATOR_CHANNEL     = 19870,
     ENCHANTED_ELEMENTAL         = 21958,
     TAINTED_ELEMENTAL           = 22009,
@@ -191,6 +191,7 @@ public:
         uint32 CoilfangStriderTimer;
         uint32 SummonSporebatTimer;
         uint32 SummonSporebatStaticTimer;
+		uint32 ParalyzecCheckTimer;
         uint8 EnchantedElementalPos;
         uint8 Phase;
 
@@ -202,7 +203,7 @@ public:
         void Reset() override
         {
             Initialize();
-
+			Paralyze(false);
             if (JustCreated)
             {
                 CanAttack = false;
@@ -225,7 +226,30 @@ public:
 
             me->SetCorpseDelay(1000*60*60);
         }
-
+		// Check Paralyze
+		void Paralyze(bool apply)
+			 {
+			Map *map = me->GetMap();
+			Map::PlayerList const &PlayerList = map->GetPlayers();
+			
+				for (Map::PlayerList::const_iterator i = PlayerList.begin(); i != PlayerList.end(); ++i)
+				 {
+				Player* i_pl = i->GetSource();
+				if (i_pl)
+					{
+					bool check = (apply ? i_pl->HasAura(SPELL_PARALYZE) && !i_pl->HasItemCount(31088, 1, false) : i_pl->HasAura(SPELL_PARALYZE));
+					
+					if (apply && i_pl->HasItemCount(31088, 1, false) && !i_pl->HasAura(SPELL_PARALYZE))
+						 i_pl->AddAura(SPELL_PARALYZE, i_pl);
+					else if (check)
+						i_pl->RemoveAurasDueToSpell(SPELL_PARALYZE);
+					
+						
+				}
+				
+				}
+				
+		}
         // Called when a tainted elemental dies
         void EventTaintedElementalDeath()
         {
@@ -340,7 +364,23 @@ public:
             // Return since we have no target
             if (!UpdateVictim())
                 return;
-
+			
+				            // Check Paralyze Effect
+				if (Phase == 2)
+					 {
+					if (ParalyzecCheckTimer < diff)
+						 {
+						Paralyze(true);
+						if (me->HasUnitState(UNIT_STATE_CHASE))
+							 {
+							me->GetMotionMaster()->Clear();
+							DoTeleportTo(MIDDLE_X, MIDDLE_Y, MIDDLE_Z);
+							}
+						ParalyzecCheckTimer = 1000;
+						}
+					else
+						 ParalyzecCheckTimer -= diff;
+					}
             if (Phase == 1 || Phase == 3)
             {
                 // ShockBlastTimer
@@ -395,7 +435,9 @@ public:
                         Phase = 2;
 
                         me->GetMotionMaster()->Clear();
-                        DoTeleportTo(MIDDLE_X, MIDDLE_Y, MIDDLE_Z);
+						//DoTeleportTo(MIDDLE_X, MIDDLE_Y, MIDDLE_Z); TC original Line
+		               //Sometimes teleport stuck and he dont go to middle
+							me->GetMotionMaster()->MovePoint(0, MIDDLE_X, MIDDLE_Y, MIDDLE_Z);
 
                         for (uint8 i = 0; i < 4; ++i)
                             if (Creature* creature = me->SummonCreature(SHIED_GENERATOR_CHANNEL, ShieldGeneratorChannelPos[i][0],  ShieldGeneratorChannelPos[i][1],  ShieldGeneratorChannelPos[i][2],  ShieldGeneratorChannelPos[i][3], TEMPSUMMON_CORPSE_DESPAWN, 0))
@@ -931,8 +973,18 @@ public:
 
                 // get and remove channel
                 if (Unit* channel = ObjectAccessor::GetCreature(*vashj, ENSURE_AI(boss_lady_vashj::boss_lady_vashjAI, vashj->AI())->ShieldGeneratorChannel[channelIdentifier]))
-                    channel->setDeathState(JUST_DIED); // call Unsummon()
-
+				{
+					channel->setDeathState(JUST_DIED); // call Unsummon()
+					for (int i = 0; i < 4; i++) //Search Another Orb
+						 if (Unit *orb = ObjectAccessor::GetCreature(*vashj, ENSURE_AI(boss_lady_vashj::boss_lady_vashjAI, vashj->AI())->ShieldGeneratorChannel[i]))
+						 if (orb->IsAlive()) // if orb is alive, force another cast
+						 {
+				        orb->CastStop();
+						orb->CastSpell(vashj, SPELL_MAGIC_BARRIER, true);
+						break;
+						}
+					
+				}
                 instance->SetData(identifier, 1);
 
                 // remove this item
