@@ -19,7 +19,6 @@ set(scripts_STAT_SRCS
     Custom/Transmog/Transmogrifier.cpp
   Custom/GOMove/GOMove.cpp
   Custom/GOMove/GOMove.h
-  Custom/chat_filter_playerscript.cpp
 )
 
 message("  -> Prepared: Custom")
