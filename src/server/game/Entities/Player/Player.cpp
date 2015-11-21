@@ -2415,7 +2415,7 @@ void Player::Regenerate(Powers power)
         else
             m_powerFraction[power] = addvalue - integerValue;
     }
-    if (m_regenTimerCount >= 2000)
+	if (m_regenTimerCount >= (power == POWER_ENERGY ? 100 : 2000))
         SetPower(power, curValue);
     else
         UpdateUInt32Value(UNIT_FIELD_POWER1 + power, curValue);
