@@ -38,7 +38,8 @@ class WorldSession;
 
 struct MapEntry;
 
-#define MAXGROUPSIZE 5
+//#define MAXGROUPSIZE 5  //comment the line below and Uncomment the first "//" in this line to change lfg from single player to multi player
+#define MAXGROUPSIZE 1
 #define MAXRAIDSIZE 40
 #define MAX_RAID_SUBGROUPS MAXRAIDSIZE/MAXGROUPSIZE
 #define TARGETICONCOUNT 8

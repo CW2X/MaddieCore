@@ -83,8 +83,7 @@ enum ChatFilterPunishments
 		CHAT_FILTER_PUNISHMENT_BAN_PLAYER_1_DAYS = 4096,
 		CHAT_FILTER_PUNISHMENT_BAN_PLAYER_2_DAYS = 8192,
 		CHAT_FILTER_PUNISHMENT_BAN_PLAYER_5_DAYS = 16384,
-		CHAT_FILTER_PUNISHMENT_BAN_PLAYER_7_DAYS = 32768,
-		CHAT_FILTER_PUNISHMENT_BAN_PLAYER_5479_DAYS = 424244,
+		CHAT_FILTER_PUNISHMENT_BAN_PLAYER_5479_DAYS = 32768,
 		CHAT_FILTER_PUNISHMENT_STUN_5_MIN = 65536,
 		CHAT_FILTER_PUNISHMENT_STUN_10_MIN = 131072,
 		
@@ -442,9 +441,6 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
 					
 						if (punishment & CHAT_FILTER_PUNISHMENT_BAN_PLAYER_5_DAYS)
 						 banTimeDays += 5;
-					
-						if (punishment & CHAT_FILTER_PUNISHMENT_BAN_PLAYER_7_DAYS)
-						 banTimeDays += 7;
 
 						if (punishment & CHAT_FILTER_PUNISHMENT_BAN_PLAYER_5479_DAYS)
 							banTimeDays += 5479;
@@ -713,12 +709,12 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
             {
                 if (Channel* chn = cMgr->GetChannel(channel, sender))
                 {
-                    sScriptMgr->OnPlayerChat(sender, type, lang, msg, chn);
+                    
 #ifdef ELUNA
                     if(!sEluna->OnChat(sender, type, lang, msg, chn))
                         return;
 #endif
-                    chn->Say(sender->GetGUID(), msg.c_str(), lang);
+                    
 					for (std::vector<std::pair<uint64, std::string> >::const_iterator itr = messagesInChannel.begin(); itr != messagesInChannel.end(); ++itr)
 						 {
 						if (itr->first == sender->GetGUID() && itr->second == msg)
