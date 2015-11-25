@@ -1,4 +1,4 @@
--- Dawnblade HawkRiders casted WAY to often, and attacked players/npcs. should only attack players from what I remember of TBC.
+-- Dawnblade HawkRiders casted WAY to often, and attacked players/npcs. should only attack NPC's from what I remember of TBC.
 
 -- Should not be able to come down and attack npc's
 UPDATE `creature_template` SET `flags_extra` = 2 WHERE (entry = 25063);
