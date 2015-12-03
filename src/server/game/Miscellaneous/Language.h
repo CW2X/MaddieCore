@@ -1261,5 +1261,8 @@ enum TrinityStrings
     // Visit http://www.realmsofwarcraft.com/bb for forums and information
     //
     // End of prepatch
+    LANG_NPCINFO_FLAGS_EXTRA                      = 11009,
+    LANG_INSTANCE_LOGIN_GAMEMASTER_EXCEPTION      = 11010
+
 };
 #endif
