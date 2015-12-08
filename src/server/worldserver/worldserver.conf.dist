@@ -117,9 +117,9 @@ LogsDir = ""
 #                     "127.0.0.1;3306;trinity;trinity;world"      - (WorldDatabaseInfo)
 #                     "127.0.0.1;3306;trinity;trinity;characters" - (CharacterDatabaseInfo)
 
-LoginDatabaseInfo     = "127.0.0.1;3306;trinity;trinity;auth"
-WorldDatabaseInfo     = "127.0.0.1;3306;trinity;trinity;world"
-CharacterDatabaseInfo = "127.0.0.1;3306;trinity;trinity;characters"
+LoginDatabaseInfo     = "127.0.0.1;3306;root;ascent;auth"
+WorldDatabaseInfo     = "127.0.0.1;3306;root;ascent;world"
+CharacterDatabaseInfo = "127.0.0.1;3306;root;ascent;characters"
 
 #
 #    LoginDatabase.WorkerThreads
@@ -319,7 +319,7 @@ PlayerSave.Stats.SaveOnlyOnLogout = 1
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-mmap.enablePathFinding = 0
+mmap.enablePathFinding = 1
 
 #
 #    vmap.enableLOS
@@ -502,7 +502,7 @@ GameType = 0
 #                     28 - (QA Server     - any language)
 #                     29 - (CN9           - basic-Latin at create, any at login)
 
-RealmZone = 1
+RealmZone = 2
 
 #
 #    StrictPlayerNames
@@ -695,7 +695,7 @@ CharactersPerRealm = 10
 #        Range:       1-10
 #        Default:     1
 
-HeroicCharactersPerRealm = 1
+HeroicCharactersPerRealm = 10
 
 #
 #    CharacterCreating.MinLevelForHeroicCharacter
@@ -731,7 +731,7 @@ MaxPlayerLevel = 80
 #        Description: Level requirement for Dual Talent Specialization.
 #        Default:     40
 
-MinDualSpecLevel = 40
+MinDualSpecLevel = 20
 
 #
 #    StartPlayerLevel
@@ -989,7 +989,7 @@ Guild.BankEventLogRecordsCount = 25
 #        Range:       0-11
 #        Default:     2
 
-MaxPrimaryTradeSkill = 2
+MaxPrimaryTradeSkill = 11
 
 #
 #    MinPetitionSigns
@@ -997,7 +997,7 @@ MaxPrimaryTradeSkill = 2
 #        Range:       0-9
 #        Default:     9
 
-MinPetitionSigns = 9
+MinPetitionSigns = 0
 
 #
 #    MaxGroupXPDistance
@@ -1078,7 +1078,7 @@ BeepAtStart = 1
 #        Example:     "Welcome to John\'s Server@This server runs on Trinity Core."
 #        Default:     "Welcome to a Trinity Core server."
 
-Motd = "Welcome to a Trinity Core server."
+Motd = "Welcome to some server that didn't get named because SOMEONE didn't go though the worldserver config!."
 
 #
 #    Server.LoginInfo
@@ -1176,7 +1176,7 @@ BirthdayTime = 1222964635
 #                     4  - (Enable world only)
 #                     0  - (All disabled)
 
-Updates.EnableDatabases = 7
+Updates.EnableDatabases = 0
 
 #
 #    Updates.SourcePath
@@ -1204,7 +1204,7 @@ Updates.MySqlCLIPath = ""
 #        Default:     1 - (Enabled)
 #                     0 - (Disabled)
 
-Updates.AutoSetup   = 1
+Updates.AutoSetup   = 0
 
 #
 #    Updates.Redundancy
@@ -1255,7 +1255,7 @@ Updates.CleanDeadRefMaxCount = 3
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-Warden.Enabled = 0
+Warden.Enabled = 1
 
 #
 #    Warden.NumMemChecks
@@ -1499,7 +1499,7 @@ Rate.Creature.Normal.SpellDamage          = 1
 Rate.Creature.Elite.Elite.SpellDamage     = 1
 Rate.Creature.Elite.RARE.SpellDamage      = 1
 Rate.Creature.Elite.RAREELITE.SpellDamage = 1
-Rate.Creature.Elite.WORLDBOSS.SpellDamage = 1
+Rate.Creature.Elite.WORLDBOSS.SpellDamage = 0.2
 
 #
 #    Rate.Creature.Normal.HP
@@ -1564,7 +1564,7 @@ ListenRange.Yell = 300
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-ChatFakeMessagePreventing = 0
+ChatFakeMessagePreventing = 1
 
 #
 #    ChatStrictLinkChecking.Severity
@@ -1594,7 +1594,7 @@ ChatStrictLinkChecking.Kick = 0
 #        Default:     10 - (Enabled)
 #                     0  - (Disabled)
 
-ChatFlood.MessageCount = 10
+ChatFlood.MessageCount = 0
 
 #
 #    ChatFlood.MessageDelay
@@ -2148,7 +2148,7 @@ Death.Bones.BattlegroundOrArena = 1
 #        Default:     1 - (Enabled)
 #                     0 - (Disabled)
 
-Die.Command.Mode = 1
+Die.Command.Mode = 0
 
 #
 ###################################################################################################
@@ -2326,7 +2326,7 @@ Battleground.RewardLoserHonorLast   = 5
 #         Default:     0 - (Disabled)
 #                      1 - (Enabled, Experimental as in incomplete, bugged and with crashes)
 
-Wintergrasp.Enable = 0
+Wintergrasp.Enable = 1
 
 #
 #     Wintergrasp.PlayerMax
@@ -2660,7 +2660,7 @@ PlayerStart.MapsExplored = 0
 #        Default:     0  - (Disabled)
 #                     1+ - (Enabled)
 
-HonorPointsAfterDuel = 0
+HonorPointsAfterDuel = 2
 
 #
 #    ResetDuelCooldowns
@@ -2668,7 +2668,7 @@ HonorPointsAfterDuel = 0
 #        Default:     0  - (Disabled)
 #                     1  - (Enabled)
 
-ResetDuelCooldowns = 0
+ResetDuelCooldowns = 1
 
 #    ResetDuelHealthMana
 #        Description: Reset health and mana before duel starts and restore them when duel ends.
@@ -2726,7 +2726,7 @@ PvPToken.ItemCount = 1
 #        Default:     0 - (Disabled)
 #                     1 - (Enabled)
 
-NoResetTalentsCost = 0
+NoResetTalentsCost = 1
 
 #
 #     Guild.AllowMultipleGuildMaster
@@ -2835,7 +2835,7 @@ PlayerDump.DisallowOverwrite = 1
 #        Example:     [13] Westfall Stew
 #        Default:     0  - (Do not show)
 
-UI.ShowQuestLevelsInDialogs = 0
+UI.ShowQuestLevelsInDialogs = 1
 
 #
 #     Calculate.Creature.Zone.Area.Data
@@ -2885,7 +2885,7 @@ AuctionHouseBot.Update.Interval = 20
 #       Default:     0 - (Disabled)
 #                    1 - (Enabled)
 
-AuctionHouseBot.Seller.Enabled = 0
+AuctionHouseBot.Seller.Enabled = 1
 
 #
 #    AuctionHouseBot.Alliance.Items.Amount.Ratio
@@ -3190,7 +3190,7 @@ AuctionHouseBot.forceExcludeItems = ""
 #       Default:     0 - (Disabled)
 #                    1 - (Enabled)
 
-AuctionHouseBot.Buyer.Enabled = 0
+AuctionHouseBot.Buyer.Enabled = 1
 
 #
 #    AuctionHouseBot.Buyer.FACTION.Enabled
@@ -3198,9 +3198,9 @@ AuctionHouseBot.Buyer.Enabled = 0
 #       Default:     0 - (Disabled)
 #                    1 - (Enabled)
 
-AuctionHouseBot.Buyer.Alliance.Enabled = 0
-AuctionHouseBot.Buyer.Horde.Enabled = 0
-AuctionHouseBot.Buyer.Neutral.Enabled = 0
+AuctionHouseBot.Buyer.Alliance.Enabled = 1
+AuctionHouseBot.Buyer.Horde.Enabled = 1
+AuctionHouseBot.Buyer.Neutral.Enabled = 1
 
 #    AuctionHouseBot.Buyer.ChanceFactor
 #       Description: k value in the formula used for the chance to buy an item "100^(1 + (1 - (AuctionBid / ItemPrice)) / k)"
@@ -3494,22 +3494,20 @@ PacketSpoof.BanDuration = 86400
 #        Example: VAS.AutoBalance.XPlayer = 1 will set everything for a 1 player game.
 #        Default:     1
 
+
+VAS.AutoBalance.XPlayer = 1
+
+###################################################################################################
+#Played Time Rewards
+
 PlayedTimeReward.Interval = 0
 PlayedTimeReward.Money    = 0
 PlayedTimeReward.Honor    = 0
 PlayedTimeReward.Arena    = 0
 
-VAS.AutoBalance.XPlayer = 1
 
-#
-###################################################################################################
 
-###################################################################################################
-#    Transmogrification config
-###################################################################################################
-###################################################################################################
-###################################################################################################
-###################################################################################################
+
 ###################################################################################################
 # GuildHouse
 #
@@ -3536,6 +3534,10 @@ VAS.AutoBalance.XPlayer = 1
 #        Description: A list of item entries that are NOT allowed for transmogrification
 #                     Example: "25 35674 5623"
 #        Default:    ""
+
+
+###################################################################################################
+#Transmog
 
 Logger.custom.transmog = 3, Console Server
 
@@ -3655,26 +3657,26 @@ Transmogrification.TokenAmount = 1
 #        Description: Ignore stat count > 0 requirement for source items
 #        Default:    0
 
-Transmogrification.AllowPoor = 0
-Transmogrification.AllowCommon = 0
+Transmogrification.AllowPoor = 1
+Transmogrification.AllowCommon = 1
 Transmogrification.AllowUncommon = 1
 Transmogrification.AllowRare = 1
 Transmogrification.AllowEpic = 1
-Transmogrification.AllowLegendary = 0
-Transmogrification.AllowArtifact = 0
+Transmogrification.AllowLegendary = 1
+Transmogrification.AllowArtifact = 1
 Transmogrification.AllowHeirloom = 1
 
-Transmogrification.AllowMixedArmorTypes = 0
-Transmogrification.AllowMixedWeaponTypes = 0
-Transmogrification.AllowFishingPoles = 0
+Transmogrification.AllowMixedArmorTypes = 1
+Transmogrification.AllowMixedWeaponTypes = 1
+Transmogrification.AllowFishingPoles = 1
 
-Transmogrification.IgnoreReqRace = 0
-Transmogrification.IgnoreReqClass = 0
-Transmogrification.IgnoreReqSkill = 0
-Transmogrification.IgnoreReqSpell = 0
-Transmogrification.IgnoreReqLevel = 0
-Transmogrification.IgnoreReqEvent = 0
-Transmogrification.IgnoreReqStats = 0
+Transmogrification.IgnoreReqRace = 1
+Transmogrification.IgnoreReqClass = 1
+Transmogrification.IgnoreReqSkill = 1
+Transmogrification.IgnoreReqSpell = 1
+Transmogrification.IgnoreReqLevel = 1
+Transmogrification.IgnoreReqEvent = 1
+Transmogrification.IgnoreReqStats = 1
 
 #
 #    SET FEATURE
@@ -3750,8 +3752,8 @@ BeastMaster.EnableExoticPet = 1
 
 LevelNPC.OnlyGMs = 0
 LevelNPC.EnableLevel80 = 1
-LevelNPC.EnableLevel100 = 1
-LevelNPC.EnableLevel150 = 1
+LevelNPC.EnableLevel100 = 0
+LevelNPC.EnableLevel150 = 0
 LevelNPC.EnableLevel200 = 0
 LevelNPC.EnableLevel255 = 0
 LevelNPC.UseTokens = 0
@@ -3943,7 +3945,7 @@ CrossfactionBG.enable = 1
 # Default : 0 (No honor when you kill a guard)
 #
 
-Custom.GainHonorOnGuardKill = 0
+Custom.GainHonorOnGuardKill = 1
 
 #
 # Custom.GainHonorOnEliteKill
@@ -4020,7 +4022,7 @@ VAS.AutoBalance.Color = cffFF8000
 #        Minimum Modifier setting for Health Modification
 #        Default:     0.20
 
-Min.HP.Mod = 0.20
+Min.HP.Mod = 0.40
 
 #
 #     Min.D.Mod
@@ -4037,14 +4039,13 @@ Min.D.Mod = 0.10
 
 VAS.AutoBalance.40.Name = "11583,16441,30057,13020,15589,14435,18192,14889,14888,14887,14890,15302,15818,15742,15741,15740,18338"
 VAS.AutoBalance.25.Name = "22997,21966,21965,21964,21806,21215,21845,19728,12397,17711,18256,18192,"
-VAS.AutoBalance.10.Name = "15689,15550,16152,17521,17225,16028,29324,31099"
+VAS.AutoBalance.10.Name = "15689,15550,16152,17521,17225,16028,29324,31099,15931"
 VAS.AutoBalance.5.Name = "15203,15204,15205,15305,6109,26801,30508,26799,30495,26803,30497,27859,27249"
 VAS.AutoBalance.2.Name = "25549,24558,25574,24559,25556,25557,25578,24561,25555,24555,25541,24553,25550,24554,24552,25564,15931,29373"
 
 
-#
-###################################################################################################
 
+###################################################################################################
 #
 # Prepatch by LordPsyan.
 # See http://www.realmsofwarcraft.com/bb for forums and information.
