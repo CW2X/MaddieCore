@@ -1257,11 +1257,11 @@ enum TrinityStrings
     // 37
    LANG_LOTTERY_ANNOUNCE_JACKPOT = 11010,
    LANG_LOTTERY_ANNOUNCE_JACKPOT_M_PLAYERS = 11011,
-   LANG_LOTTERY_ANNOUNCE = 11012
+   LANG_LOTTERY_ANNOUNCE = 11012,
     // Visit http://www.realmsofwarcraft.com/bb for forums and information
     //
     // End of prepatch
-    LANG_NPCINFO_FLAGS_EXTRA                      = 11009,
+    
     LANG_INSTANCE_LOGIN_GAMEMASTER_EXCEPTION      = 11010
 
 };
