@@ -1499,7 +1499,7 @@ Rate.Creature.Normal.SpellDamage          = 1
 Rate.Creature.Elite.Elite.SpellDamage     = 1
 Rate.Creature.Elite.RARE.SpellDamage      = 1
 Rate.Creature.Elite.RAREELITE.SpellDamage = 1
-Rate.Creature.Elite.WORLDBOSS.SpellDamage = 0.2
+Rate.Creature.Elite.WORLDBOSS.SpellDamage = 1
 
 #
 #    Rate.Creature.Normal.HP
