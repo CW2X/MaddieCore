@@ -1652,6 +1652,7 @@ void Player::Update(uint32 p_time)
     // Visit http://www.realmsofwarcraft.com/bb for forums and information
     //
     // End of prepatch
+
 }
 
 void Player::setDeathState(DeathState s)
