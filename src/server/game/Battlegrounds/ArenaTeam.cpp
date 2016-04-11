@@ -611,6 +611,7 @@ uint32 ArenaTeam::GetPoints(uint32 memberRating)
         points *= 0.76f;
     else if (Type == ARENA_TEAM_3v3)
         points *= 0.88f;
+	points *= sWorld->getRate(RATE_ARENA_POINTS);
 
     return (uint32) points;
 }
@@ -673,7 +674,7 @@ int32 ArenaTeam::GetMatchmakerRatingMod(uint32 ownRating, uint32 opponentRating,
     */
 
     // Real rating modification
-    mod *= 24.0f;
+	mod *= sWorld->getFloatConfig(CONFIG_ARENA_MATCHMAKER_RATING_MODIFIER);
 
     return (int32)ceil(mod);
 }
@@ -689,16 +690,23 @@ int32 ArenaTeam::GetRatingMod(uint32 ownRating, uint32 opponentRating, bool won 
     float mod;
 
     /// @todo Replace this hack with using the confidence factor (limiting the factor to 2.0f)
-    if (won && ownRating < 1300)
-    {
-        if (ownRating < 1000)
-            mod = 48.0f * (won_mod - chance);
-        else
-            mod = (24.0f + (24.0f * (1300.0f - float(ownRating)) / 300.0f)) * (won_mod - chance);
-    }
-    else
-        mod = 24.0f * (won_mod - chance);
+	if (won)
+	{
+		if (ownRating < 1300)
+		{
+			float win_rating_modifier1 = sWorld->getFloatConfig(CONFIG_ARENA_WIN_RATING_MODIFIER_1);
 
+			if (ownRating < 1000)
+				mod = win_rating_modifier1 * (1.0f - chance);
+			else
+				mod = ((win_rating_modifier1 / 2.0f) + ((win_rating_modifier1 / 2.0f) * (1300.0f - float(ownRating)) / 300.0f)) * (1.0f - chance);
+		}
+		else
+			mod = sWorld->getFloatConfig(CONFIG_ARENA_WIN_RATING_MODIFIER_2) * (1.0f - chance);
+	}
+	    
+	else
+		mod = sWorld->getFloatConfig(CONFIG_ARENA_LOSE_RATING_MODIFIER) * (-chance);
     return (int32)ceil(mod);
 }
 
