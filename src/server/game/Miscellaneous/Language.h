@@ -1262,7 +1262,9 @@ enum TrinityStrings
     //
     // End of prepatch
     
-    LANG_INSTANCE_LOGIN_GAMEMASTER_EXCEPTION      = 11010
+    LANG_INSTANCE_LOGIN_GAMEMASTER_EXCEPTION      = 11010,
+
+	LANG_INSTANCE_BIND_MISMATCH = 11014
 
 };
 #endif
