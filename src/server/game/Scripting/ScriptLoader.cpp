@@ -39,6 +39,9 @@ void AddSC_SmartScripts();
 //TeleNPC2
 void AddSC_npc_teleport();
 
+//login BOA
+void AddSC_Player_BoA();
+
 //Commands
 void AddSC_account_commandscript();
 void AddSC_achievement_commandscript();
@@ -1620,6 +1623,8 @@ void AddCustomScripts()
     AddSC_summon();
 // end50
 // end51
+	// login BoA
+	AddSC_Player_BoA();
 // end52
     // TeleNPC2
     AddSC_npc_teleport();
