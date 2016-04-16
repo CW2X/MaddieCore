@@ -746,94 +746,103 @@ bool SmartAIMgr::IsEventValid(SmartScriptHolder& e)
         }
     }
 
-    switch (e.GetActionType())
-    {
-        case SMART_ACTION_TALK:
-        case SMART_ACTION_SIMPLE_TALK:
-            if (!IsTextValid(e, e.action.talk.textGroupID))
-                return false;
-            break;
-        case SMART_ACTION_SET_FACTION:
-            if (e.action.faction.factionID && !sFactionTemplateStore.LookupEntry(e.action.faction.factionID))
-            {
-                TC_LOG_ERROR("sql.sql", "SmartAIMgr: Entry %d SourceType %u Event %u Action %u uses non-existent Faction %u, skipped.", e.entryOrGuid, e.GetScriptType(), e.event_id, e.GetActionType(), e.action.faction.factionID);
-                return false;
-            }
-            break;
-        case SMART_ACTION_MORPH_TO_ENTRY_OR_MODEL:
-        case SMART_ACTION_MOUNT_TO_ENTRY_OR_MODEL:
-            if (e.action.morphOrMount.creature || e.action.morphOrMount.model)
-            {
-                if (e.action.morphOrMount.creature > 0 && !sObjectMgr->GetCreatureTemplate(e.action.morphOrMount.creature))
-                {
-                    TC_LOG_ERROR("sql.sql", "SmartAIMgr: Entry %d SourceType %u Event %u Action %u uses non-existent Creature entry %u, skipped.", e.entryOrGuid, e.GetScriptType(), e.event_id, e.GetActionType(), e.action.morphOrMount.creature);
-                    return false;
-                }
-
-                if (e.action.morphOrMount.model)
-                {
-                    if (e.action.morphOrMount.creature)
-                    {
-                        TC_LOG_ERROR("sql.sql", "SmartAIMgr: Entry %d SourceType %u Event %u Action %u has ModelID set with also set CreatureId, skipped.", e.entryOrGuid, e.GetScriptType(), e.event_id, e.GetActionType());
-                        return false;
-                    }
-                    else if (!sCreatureDisplayInfoStore.LookupEntry(e.action.morphOrMount.model))
-                    {
-                        TC_LOG_ERROR("sql.sql", "SmartAIMgr: Entry %d SourceType %u Event %u Action %u uses non-existent Model id %u, skipped.", e.entryOrGuid, e.GetScriptType(), e.event_id, e.GetActionType(), e.action.morphOrMount.model);
-                        return false;
-                    }
-                }
-            }
-            break;
-        case SMART_ACTION_SOUND:
-            if (!IsSoundValid(e, e.action.sound.sound))
-                return false;
-            break;
-        case SMART_ACTION_SET_EMOTE_STATE:
-        case SMART_ACTION_PLAY_EMOTE:
-            if (!IsEmoteValid(e, e.action.emote.emote))
-                return false;
-            break;
-        case SMART_ACTION_FAIL_QUEST:
-        case SMART_ACTION_ADD_QUEST:
-            if (!e.action.quest.quest || !IsQuestValid(e, e.action.quest.quest))
-                return false;
-            break;
-        case SMART_ACTION_ACTIVATE_TAXI:
-            {
-                if (!sTaxiPathStore.LookupEntry(e.action.taxi.id))
-                {
-                    TC_LOG_ERROR("sql.sql", "SmartAIMgr: Entry %d SourceType %u Event %u Action %u uses invalid Taxi path ID %u, skipped.", e.entryOrGuid, e.GetScriptType(), e.event_id, e.GetActionType(), e.action.taxi.id);
-                    return false;
-                }
-                break;
-            }
-        case SMART_ACTION_RANDOM_EMOTE:
-            if (e.action.randomEmote.emote1 && !IsEmoteValid(e, e.action.randomEmote.emote1))
-                return false;
-
-            if (e.action.randomEmote.emote2 && !IsEmoteValid(e, e.action.randomEmote.emote2))
-                return false;
-
-            if (e.action.randomEmote.emote3 && !IsEmoteValid(e, e.action.randomEmote.emote3))
-                return false;
-
-            if (e.action.randomEmote.emote4 && !IsEmoteValid(e, e.action.randomEmote.emote4))
-                return false;
-
-            if (e.action.randomEmote.emote5 && !IsEmoteValid(e, e.action.randomEmote.emote5))
-                return false;
-
-            if (e.action.randomEmote.emote6 && !IsEmoteValid(e, e.action.randomEmote.emote6))
-                return false;
-            break;
-		case SMART_ACTION_RANDOM_SOUND:
-			for (uint8 i = 0; i < SMART_ACTION_PARAM_COUNT - 1; i++)
+	switch (e.GetActionType())
+	{
+	case SMART_ACTION_TALK:
+	case SMART_ACTION_SIMPLE_TALK:
+		if (!IsTextValid(e, e.action.talk.textGroupID))
+			return false;
+		break;
+	case SMART_ACTION_SET_FACTION:
+		if (e.action.faction.factionID && !sFactionTemplateStore.LookupEntry(e.action.faction.factionID))
+		{
+			TC_LOG_ERROR("sql.sql", "SmartAIMgr: Entry %d SourceType %u Event %u Action %u uses non-existent Faction %u, skipped.", e.entryOrGuid, e.GetScriptType(), e.event_id, e.GetActionType(), e.action.faction.factionID);
+			return false;
+		}
+		break;
+	case SMART_ACTION_MORPH_TO_ENTRY_OR_MODEL:
+	case SMART_ACTION_MOUNT_TO_ENTRY_OR_MODEL:
+		if (e.action.morphOrMount.creature || e.action.morphOrMount.model)
+		{
+			if (e.action.morphOrMount.creature > 0 && !sObjectMgr->GetCreatureTemplate(e.action.morphOrMount.creature))
 			{
-				if (e.action.randomSound.sound[i] && !IsSoundValid(e, e.action.randomSound.sound[i]))
-					return false;
+				TC_LOG_ERROR("sql.sql", "SmartAIMgr: Entry %d SourceType %u Event %u Action %u uses non-existent Creature entry %u, skipped.", e.entryOrGuid, e.GetScriptType(), e.event_id, e.GetActionType(), e.action.morphOrMount.creature);
+				return false;
 			}
-			break;
+
+			if (e.action.morphOrMount.model)
+			{
+				if (e.action.morphOrMount.creature)
+				{
+					TC_LOG_ERROR("sql.sql", "SmartAIMgr: Entry %d SourceType %u Event %u Action %u has ModelID set with also set CreatureId, skipped.", e.entryOrGuid, e.GetScriptType(), e.event_id, e.GetActionType());
+					return false;
+				}
+				else if (!sCreatureDisplayInfoStore.LookupEntry(e.action.morphOrMount.model))
+				{
+					TC_LOG_ERROR("sql.sql", "SmartAIMgr: Entry %d SourceType %u Event %u Action %u uses non-existent Model id %u, skipped.", e.entryOrGuid, e.GetScriptType(), e.event_id, e.GetActionType(), e.action.morphOrMount.model);
+					return false;
+				}
+			}
+		}
+		break;
+	case SMART_ACTION_SOUND:
+		if (!IsSoundValid(e, e.action.sound.sound))
+			return false;
+		break;
+	case SMART_ACTION_SET_EMOTE_STATE:
+	case SMART_ACTION_PLAY_EMOTE:
+		if (!IsEmoteValid(e, e.action.emote.emote))
+			return false;
+		break;
+	case SMART_ACTION_FAIL_QUEST:
+	case SMART_ACTION_ADD_QUEST:
+		if (!e.action.quest.quest || !IsQuestValid(e, e.action.quest.quest))
+			return false;
+		break;
+	case SMART_ACTION_ACTIVATE_TAXI:
+	{
+		if (!sTaxiPathStore.LookupEntry(e.action.taxi.id))
+		{
+			TC_LOG_ERROR("sql.sql", "SmartAIMgr: Entry %d SourceType %u Event %u Action %u uses invalid Taxi path ID %u, skipped.", e.entryOrGuid, e.GetScriptType(), e.event_id, e.GetActionType(), e.action.taxi.id);
+			return false;
+		}
+		break;
+	}
+	case SMART_ACTION_RANDOM_EMOTE:
+		if (e.action.randomEmote.emote1 && !IsEmoteValid(e, e.action.randomEmote.emote1))
+			return false;
+
+		if (e.action.randomEmote.emote2 && !IsEmoteValid(e, e.action.randomEmote.emote2))
+			return false;
+
+		if (e.action.randomEmote.emote3 && !IsEmoteValid(e, e.action.randomEmote.emote3))
+			return false;
+
+		if (e.action.randomEmote.emote4 && !IsEmoteValid(e, e.action.randomEmote.emote4))
+			return false;
+
+		if (e.action.randomEmote.emote5 && !IsEmoteValid(e, e.action.randomEmote.emote5))
+			return false;
+
+		if (e.action.randomEmote.emote6 && !IsEmoteValid(e, e.action.randomEmote.emote6))
+			return false;
+		break;
+	case SMART_ACTION_RANDOM_SOUND:
+	{
+		if (std::all_of(e.action.randomSound.sounds.begin(), e.action.randomSound.sounds.end(), [](uint32 sound) { return sound == 0; }))
+		{
+			TC_LOG_ERROR("sql.sql", "SmartAIMgr: Entry %d SourceType %u Event %u Action %u does not have any non-zero sound",
+				e.entryOrGuid, e.GetScriptType(), e.event_id, e.GetActionType());
+			return false;
+		}
+
+		for (uint32 sound : e.action.randomSound.sounds)
+			if (sound && !IsSoundValid(e, sound))
+				return false;
+
+
+		break;
+	}
         case SMART_ACTION_CAST:
         {
             if (!IsSpellValid(e, e.action.cast.spell))
