@@ -2903,6 +2903,7 @@ void Player::GiveLevel(uint8 level)
         UpdateSkillsToMaxSkillsForLevel();
 
     // set current level health and mana/energy to maximum after applying all mods.
+	_ApplyAllLevelScaleItemMods(true);
     SetFullHealth();
     SetPower(POWER_MANA, GetMaxPower(POWER_MANA));
     SetPower(POWER_ENERGY, GetMaxPower(POWER_ENERGY));
@@ -2911,7 +2912,7 @@ void Player::GiveLevel(uint8 level)
     SetPower(POWER_FOCUS, 0);
     SetPower(POWER_HAPPINESS, 0);
 
-    _ApplyAllLevelScaleItemMods(true);
+   
 
     // update level to hunter/summon pet
     if (Pet* pet = GetPet())
