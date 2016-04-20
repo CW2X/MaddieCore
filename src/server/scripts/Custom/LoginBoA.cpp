@@ -1,7 +1,7 @@
 #include "Player.h"
 #include "Chat.h"
 #include "ScriptMgr.h"
-#define Welcome_Name "Blood Lust"
+#define Welcome_Name "MaddieCore"
 
 class Player_Boa : public PlayerScript
  {
@@ -13,9 +13,10 @@ class Player_Boa : public PlayerScript
 				 {
 				if (!firstLogin) // Run script only on first login
 					 return;
-				std::ostringstream ss;
-				ss << "|cffFF0000[" << Welcome_Name << "]|r Welcome " << player->GetName() << " to the server! ";
-				sWorld->SendServerMessage(SERVER_MSG_STRING, ss.str().c_str());
+			//	std::ostringstream ss;
+			//	ss << "|cffFF0000[" << Welcome_Name << "]|r Welcome " << player->GetName() << " to the server! ";
+			//	sWorld->SendServerMessage(SERVER_MSG_STRING, ss.str().c_str());
+				// Uncomment above lines to re enable new player welcome broadcast.
 				uint32 shoulders = 0, chest = 0, ring = 0, trinkett = 0, weapon = 0, weapon2 = 0, shoulders2 = 0, chest2 = 0, trinkett2 = 0, bag = 0;
 				
 
