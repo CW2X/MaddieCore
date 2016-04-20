@@ -55,7 +55,8 @@ enum ShamanSpells
     SPELL_SHAMAN_TOTEM_EARTHBIND_EARTHGRAB      = 64695,
     SPELL_SHAMAN_TOTEM_EARTHBIND_TOTEM          = 6474,
     SPELL_SHAMAN_TOTEM_EARTHEN_POWER            = 59566,
-    SPELL_SHAMAN_TOTEM_HEALING_STREAM_HEAL      = 52042
+	SPELL_SHAMAN_TOTEM_HEALING_STREAM_HEAL      = 52042,
+	SPELL_SHAMAN_TOTEMIC_MASTERY                = 38437
 };
 
 enum ShamanSpellIcons
@@ -1023,6 +1024,46 @@ class spell_sha_thunderstorm : public SpellScriptLoader
         {
             return new spell_sha_thunderstorm_SpellScript();
         }
+};
+
+// 38443 - Totemic Mastery (Tier 6 - 2P)
+class spell_sha_totemic_mastery : public SpellScriptLoader
+{
+public:
+	spell_sha_totemic_mastery() : SpellScriptLoader("spell_sha_totemic_mastery") { }
+
+	class spell_sha_totemic_mastery_AuraScript : public AuraScript
+	{
+		PrepareAuraScript(spell_sha_totemic_mastery_AuraScript);
+
+		bool Validate(SpellInfo const* /*spellInfo*/) override
+		{
+			if (!sSpellMgr->GetSpellInfo(SPELL_SHAMAN_TOTEMIC_MASTERY))
+				return false;
+			return true;
+		}
+
+		void HandleDummy(AuraEffect const* /*aurEff*/)
+		{
+			Unit* target = GetTarget();
+			for (uint8 i = SUMMON_SLOT_TOTEM; i < MAX_TOTEM_SLOT; ++i)
+				if (!target->m_SummonSlot[i])
+					return;
+
+			target->CastSpell(target, SPELL_SHAMAN_TOTEMIC_MASTERY, true);
+			PreventDefaultAction();
+		}
+
+		void Register() override
+		{
+			OnEffectPeriodic += AuraEffectPeriodicFn(spell_sha_totemic_mastery_AuraScript::HandleDummy, EFFECT_0, SPELL_AURA_PERIODIC_TRIGGER_SPELL);
+		}
+	};
+
+	AuraScript* GetAuraScript() const override
+	{
+		return new spell_sha_totemic_mastery_AuraScript();
+	}
 };
 
 void AddSC_shaman_spell_scripts()
