@@ -25,7 +25,6 @@ EndScriptData */
 
 /* ContentData
 npcs_dithers_and_arbington
-npc_myranda_the_hag
 npc_the_scourge_cauldron
 npc_andorhal_tower
 EndContentData */
@@ -33,7 +32,6 @@ EndContentData */
 #include "ScriptMgr.h"
 #include "ScriptedCreature.h"
 #include "ScriptedGossip.h"
-#include "ScriptedEscortAI.h"
 #include "Player.h"
 #include "WorldSession.h"
 
@@ -113,55 +111,6 @@ public:
 			player->ADD_GOSSIP_ITEM_DB(GOSSIP_MENU_ID_LETS_GET_TO_WORK, GOSSIP_ITEM_ID_GAHRRON_S_WITH, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 4);
 			player->SEND_GOSSIP_MENU(NPC_TEXT_LET_S_GET_TO_WORK, creature->GetGUID());
 		}
-        else
-            player->SEND_GOSSIP_MENU(player->GetGossipTextId(creature), creature->GetGUID());
-
-        return true;
-    }
-};
-
-/*######
-## npc_myranda_the_hag
-######*/
-
-enum Myranda
-{
-	ILLUSION_GOSSIP         = 4773,
-    QUEST_SUBTERFUGE        = 5862,
-    QUEST_IN_DREAMS         = 5944,
-    SPELL_SCARLET_ILLUSION  = 17961
-};
-
-
-class npc_myranda_the_hag : public CreatureScript
-{
-public:
-    npc_myranda_the_hag() : CreatureScript("npc_myranda_the_hag") { }
-
-    bool OnGossipSelect(Player* player, Creature* /*creature*/, uint32 /*sender*/, uint32 action) override
-    {
-        player->PlayerTalkClass->ClearMenus();
-        if (action == GOSSIP_ACTION_INFO_DEF + 1)
-        {
-            player->CLOSE_GOSSIP_MENU();
-            player->CastSpell(player, SPELL_SCARLET_ILLUSION, false);
-        }
-        return true;
-    }
-
-    bool OnGossipHello(Player* player, Creature* creature) override
-    {
-        if (creature->IsQuestGiver())
-            player->PrepareQuestMenu(creature->GetGUID());
-
-        if (player->GetQuestStatus(QUEST_SUBTERFUGE) == QUEST_STATUS_COMPLETE &&
-            player->GetQuestStatus(QUEST_IN_DREAMS) != QUEST_STATUS_COMPLETE &&
-            !player->HasAura(SPELL_SCARLET_ILLUSION))
-        {
-			player->ADD_GOSSIP_ITEM_DB(Player::GetDefaultGossipMenuForSource(creature), 0, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
-			player->SEND_GOSSIP_MENU(ILLUSION_GOSSIP, creature->GetGUID());
-            return true;
-        }
         else
             player->SEND_GOSSIP_MENU(player->GetGossipTextId(creature), creature->GetGUID());
 
@@ -288,14 +237,11 @@ public:
     };
 };
 
-/*######
-##
-######*/
+
 
 void AddSC_western_plaguelands()
 {
     new npcs_dithers_and_arbington();
-    new npc_myranda_the_hag();
     new npc_the_scourge_cauldron();
     new npc_andorhal_tower();
 }
