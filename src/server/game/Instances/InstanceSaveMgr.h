@@ -191,6 +191,8 @@ class InstanceSaveManager
             return itr != m_resetTimeByMapDifficulty.end() ? itr->second : 0;
         }
 
+		time_t GetSubsequentResetTime(uint32 mapid, Difficulty difficulty, time_t resetTime) const;
+
         // Use this on startup when initializing reset times
         void InitializeResetTimeFor(uint32 mapid, Difficulty d, time_t t)
         {
@@ -210,6 +212,7 @@ class InstanceSaveManager
             return m_resetTimeByMapDifficulty;
         }
         void ScheduleReset(bool add, time_t time, InstResetEvent event);
+		void ForceGlobalReset(uint32 mapId, Difficulty difficulty);
 
         void Update();
 

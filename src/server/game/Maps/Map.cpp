@@ -3195,32 +3195,47 @@ bool InstanceMap::Reset(uint8 method)
     // note: since the map may not be loaded when the instance needs to be reset
     // the instance must be deleted from the DB by InstanceSaveManager
 
-    if (HavePlayers())
-    {
-        if (method == INSTANCE_RESET_ALL || method == INSTANCE_RESET_CHANGE_DIFFICULTY)
-        {
-            // notify the players to leave the instance so it can be reset
-            for (MapRefManager::iterator itr = m_mapRefManager.begin(); itr != m_mapRefManager.end(); ++itr)
-                itr->GetSource()->SendResetFailedNotify(GetId());
-        }
-        else
-        {
-            if (method == INSTANCE_RESET_GLOBAL)
-                // set the homebind timer for players inside (1 minute)
-                for (MapRefManager::iterator itr = m_mapRefManager.begin(); itr != m_mapRefManager.end(); ++itr)
-                    itr->GetSource()->m_InstanceValid = false;
+	if (HavePlayers())
+	{
+		if (method == INSTANCE_RESET_ALL || method == INSTANCE_RESET_CHANGE_DIFFICULTY)
+		{
+			// notify the players to leave the instance so it can be reset
+			for (MapRefManager::iterator itr = m_mapRefManager.begin(); itr != m_mapRefManager.end(); ++itr)
+				itr->GetSource()->SendResetFailedNotify(GetId());
+		}
+		else
+		{
+			bool doUnload = true;
+			if (method == INSTANCE_RESET_GLOBAL)
+			{
+				// set the homebind timer for players inside (1 minute)
+				for (MapRefManager::iterator itr = m_mapRefManager.begin(); itr != m_mapRefManager.end(); ++itr)
+				{
+					InstancePlayerBind* bind = itr->GetSource()->GetBoundInstance(GetId(), GetDifficulty());
+					if (bind && bind->extendState && bind->save->GetInstanceId() == GetInstanceId())
+						doUnload = false;
+					else
+						itr->GetSource()->m_InstanceValid = false;
+				}
 
-            // the unload timer is not started
-            // instead the map will unload immediately after the players have left
-            m_unloadWhenEmpty = true;
-            m_resetAfterUnload = true;
-        }
-    }
+				if (doUnload && HasPermBoundPlayers()) // check if any unloaded players have a nonexpired save to this
+					doUnload = false;
+			}
+
+			if (doUnload)
+			{
+				// the unload timer is not started
+				// instead the map will unload immediately after the players have left
+				m_unloadWhenEmpty = true;
+				m_resetAfterUnload = true;
+			}
+		}
+	}
     else
     {
         // unloaded at next update
         m_unloadTimer = MIN_UNLOAD_DELAY;
-        m_resetAfterUnload = true;
+		m_resetAfterUnload = !(method == INSTANCE_RESET_GLOBAL && HasPermBoundPlayers());
     }
 
     return m_mapRefManager.isEmpty();
@@ -3299,6 +3314,13 @@ void InstanceMap::SetResetSchedule(bool on)
 MapDifficulty const* Map::GetMapDifficulty() const
 {
     return GetMapDifficultyData(GetId(), GetDifficulty());
+}
+
+bool InstanceMap::HasPermBoundPlayers() const
+{
+	PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_PERM_BIND_BY_INSTANCE);
+	stmt->setUInt16(0, GetInstanceId());
+	return !!CharacterDatabase.Query(stmt);
 }
 
 uint32 InstanceMap::GetMaxPlayers() const
