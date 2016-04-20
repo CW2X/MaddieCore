@@ -434,30 +434,8 @@ enum WorldIntConfigs
     CONFIG_CHARTER_COST_ARENA_5v5,
     CONFIG_NO_GRAY_AGGRO_ABOVE,
     CONFIG_NO_GRAY_AGGRO_BELOW,
-    // Prepatch by LordPsyan
-    // 61
-    // 62
-    // 63
-    // 64
-    // 65
-    // 66
-    // 67
-    // 68
-    // 69
-    // 70
-    // 71
-    // 72
-    // 73
-    // 74
-    // 75
-    // 76
-    // 77
-    // 78
-    // 79
-    // 80
-    // Visit http://www.realmsofwarcraft.com/bb for forums and information
-    //
-    // End of prepatch
+	CONFIG_AUCTION_GETALL_DELAY,
+	CONFIG_AUCTION_SEARCH_DELAY,
     INT_CONFIG_VALUE_COUNT
 };
 
