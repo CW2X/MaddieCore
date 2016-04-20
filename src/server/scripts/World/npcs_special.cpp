@@ -2575,7 +2575,7 @@ public:
 
 enum EgbertMisc
 {
-	EVENT_MOVE_POS = 1,
+    EVENT_MOVE_POS = 1,
 	EVENT_RETURN = 2
 };
 
