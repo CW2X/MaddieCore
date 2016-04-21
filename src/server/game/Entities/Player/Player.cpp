@@ -15782,8 +15782,8 @@ bool Player::SatisfyQuestDay(Quest const* qInfo, bool msg)
 
     if (qInfo->IsDFQuest())
     {
-        if (!m_DFQuests.empty())
-            return false;
+		if (m_DFQuests.find(qInfo->GetQuestId()) != m_DFQuests.end())
+        return false;
 
         return true;
     }
