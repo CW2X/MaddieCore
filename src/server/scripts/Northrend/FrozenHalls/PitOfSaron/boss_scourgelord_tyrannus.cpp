@@ -22,6 +22,7 @@
 #include "pit_of_saron.h"
 #include "Vehicle.h"
 #include "Player.h"
+#include "PlayerAI\PlayerAI.h"
 
 enum Yells
 {
@@ -438,10 +439,11 @@ class spell_tyrannus_overlord_brand : public SpellScriptLoader
                 if (GetTarget()->GetTypeId() != TYPEID_PLAYER)
                     return;
 
-                oldAI = GetTarget()->GetAI();
-                oldAIState = GetTarget()->IsAIEnabled;
-                GetTarget()->SetAI(new player_overlord_brandAI(GetTarget()->ToPlayer(), GetCasterGUID()));
-                GetTarget()->IsAIEnabled = true;
+				Player* pTarget = GetTarget()->ToPlayer();
+				oldAI = pTarget->AI();
+				oldAIState = pTarget->IsAIEnabled;
+				GetTarget()->SetAI(new player_overlord_brandAI(pTarget, GetCasterGUID()));
+				GetTarget()->IsAIEnabled = true;
             }
 
             void OnRemove(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
@@ -449,10 +451,10 @@ class spell_tyrannus_overlord_brand : public SpellScriptLoader
                 if (GetTarget()->GetTypeId() != TYPEID_PLAYER)
                     return;
 
-                GetTarget()->IsAIEnabled = oldAIState;
-                UnitAI* thisAI = GetTarget()->GetAI();
-                GetTarget()->SetAI(oldAI);
-                delete thisAI;
+				GetTarget()->IsAIEnabled = oldAIState;
+				PlayerAI* thisAI = GetTarget()->ToPlayer()->AI();
+				GetTarget()->SetAI(oldAI);
+				delete thisAI;
             }
 
             void Register() override
@@ -461,7 +463,7 @@ class spell_tyrannus_overlord_brand : public SpellScriptLoader
                 AfterEffectRemove += AuraEffectRemoveFn(spell_tyrannus_overlord_brand_AuraScript::OnRemove, EFFECT_0, SPELL_AURA_DUMMY, AURA_EFFECT_HANDLE_REAL);
             }
 
-            UnitAI* oldAI;
+			PlayerAI* oldAI;
             bool oldAIState;
         };
 

@@ -55,6 +55,7 @@ class PlayerMenu;
 class PlayerSocial;
 class SpellCastTargets;
 class UpdateMask;
+class PlayerAI;
 
 struct CharacterCustomizeInfo;
 
@@ -1072,6 +1073,8 @@ class Player : public Unit, public GridObject<Player>
         uint32 GetTeam() const { return m_bgData.bgTeam && GetBattleground() ? m_bgData.bgTeam : m_team; }
         bool SendRealNameQuery();
         FakePlayers m_FakePlayers;
+
+		PlayerAI* AI() const { return reinterpret_cast<PlayerAI*>(i_AI); }
 
         void CleanupsBeforeDelete(bool finalCleanup = true) override;
 
@@ -2633,7 +2636,7 @@ class Player : public Unit, public GridObject<Player>
 
         MapReference m_mapRef;
 
-        void UpdateCharmedAI();
+       
 
         uint32 m_lastFallTime;
         float  m_lastFallZ;

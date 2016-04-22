@@ -22,7 +22,7 @@
  */
 
 #include "Player.h"
-#include "UnitAI.h"
+#include "PlayerAI\PlayerAI.h"
 #include "ScriptMgr.h"
 #include "SpellScript.h"
 #include "SpellAuraEffects.h"
@@ -1909,7 +1909,7 @@ public:
 			if (!player || player->GetGhoulResurrectGhoulGUID().IsEmpty())
 				return;
 
-			oldAI = player->GetAI();
+			oldAI = player->AI();
 			oldAIState = player->IsAIEnabled;
 			player->SetAI(new player_ghoulAI(player, player->GetGhoulResurrectGhoulGUID()));
 			player->IsAIEnabled = true;
@@ -1922,7 +1922,7 @@ public:
 				return;
 
 			player->IsAIEnabled = oldAIState;
-			UnitAI* thisAI = player->GetAI();
+			PlayerAI* thisAI = player->AI();
 			player->SetAI(oldAI);
 			delete thisAI;
 
