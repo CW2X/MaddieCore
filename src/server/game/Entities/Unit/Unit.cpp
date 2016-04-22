@@ -12382,7 +12382,8 @@ void Unit::UpdateSpeed(UnitMoveType mtype, bool forced)
                 if (Creature* creature = ToCreature())
                 {
                     uint32 immuneMask = creature->GetCreatureTemplate()->MechanicImmuneMask;
-                    if (immuneMask & (1 << MECHANIC_SNARE) || immuneMask & (1 << MECHANIC_DAZE))
+					if (immuneMask & (1 << (MECHANIC_SNARE - 1)) || immuneMask & (1 << (MECHANIC_DAZE - 1)))
+
                         break;
                 }
 
