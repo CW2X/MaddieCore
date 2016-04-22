@@ -54,7 +54,7 @@ public:
 	SimpleCharmedPlayerAI(Player* player) : PlayerAI(player) { }
 	void UpdateAI(uint32 diff) override;
 	void OnCharmed(bool apply) override;
-	Unit* SelectAttackTarget() const;
+	Unit* SelectAttackTarget() const override;
 };
 
 #endif
