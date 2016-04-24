@@ -563,7 +563,7 @@ bool Map::AddToMap(T* obj)
     if (obj->IsInWorld())
     {
         ASSERT(obj->IsInGrid());
-        obj->UpdateObjectVisibility(true);
+		obj->UpdateObjectVisibilityOnCreate();
         return true;
     }
 
