@@ -154,8 +154,8 @@ public:
             Initialize();
 
             // Not in progress
-            instance->SetData(TYPE_ARAN, NOT_STARTED);
-            instance->HandleGameObject(instance->GetGuidData(DATA_GO_LIBRARY_DOOR), true);
+			instance->SetBossState(DATA_ARAN, NOT_STARTED);
+			instance->HandleGameObject(instance->GetGuidData(DATA_GO_LIBRARY_DOOR), true);
         }
 
         void KilledUnit(Unit* /*victim*/) override
@@ -167,16 +167,16 @@ public:
         {
             Talk(SAY_DEATH);
 
-            instance->SetData(TYPE_ARAN, DONE);
-            instance->HandleGameObject(instance->GetGuidData(DATA_GO_LIBRARY_DOOR), true);
+			instance->SetBossState(DATA_ARAN, DONE);
+			instance->HandleGameObject(instance->GetGuidData(DATA_GO_LIBRARY_DOOR), true);
         }
 
         void EnterCombat(Unit* /*who*/) override
         {
             Talk(SAY_AGGRO);
 
-            instance->SetData(TYPE_ARAN, IN_PROGRESS);
-            instance->HandleGameObject(instance->GetGuidData(DATA_GO_LIBRARY_DOOR), false);
+			instance->SetBossState(DATA_ARAN, IN_PROGRESS);
+			instance->HandleGameObject(instance->GetGuidData(DATA_GO_LIBRARY_DOOR), false);
         }
 
         void FlameWreathEffect()
