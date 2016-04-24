@@ -9328,7 +9328,7 @@ Unit* Unit::GetCharmer() const
     if (ObjectGuid charmerGUID = GetCharmerGUID())
         return ObjectAccessor::GetUnit(*this, charmerGUID);
 
-    return NULL;
+	return nullptr;
 }
 
 Player* Unit::GetCharmerOrOwnerPlayerOrPlayerItself() const
@@ -13768,16 +13768,16 @@ void Unit::CleanupsBeforeDelete(bool finalCleanup)
 
 void Unit::UpdateCharmAI()
 {
-    if (GetTypeId() == TYPEID_PLAYER)
-        return;
-
-    if (i_disabledAI) // disabled AI must be primary AI
+	switch (GetTypeId())
+	{
+	case TYPEID_UNIT:
+		if (i_disabledAI) // disabled AI must be primary AI
     {
         if (!IsCharmed())
         {
             delete i_AI;
             i_AI = i_disabledAI;
-            i_disabledAI = NULL;
+			i_disabledAI = nullptr;
         }
     }
     else
@@ -13791,6 +13791,41 @@ void Unit::UpdateCharmAI()
                 i_AI = new PetAI(ToCreature());
         }
     }
+		break;
+	case TYPEID_PLAYER:
+	{
+		if (Unit* charmer = GetCharmer()) // if we are currently being charmed, then we should apply charm AI
+		{
+			if (Creature* creatureCharmer = charmer->ToCreature()) // this should only ever happen for creature charmers
+			{
+				i_disabledAI = i_AI;
+				// first, we check if the creature's own AI specifies an override playerai for its owned players
+				if (PlayerAI* charmAI = creatureCharmer->IsAIEnabled ? creatureCharmer->AI()->GetAIForCharmedPlayer(ToPlayer()) : nullptr)
+					i_AI = charmAI;
+				else // otherwise, we default to the generic one
+					i_AI = new SimpleCharmedPlayerAI(ToPlayer());
+			}
+			else
+			{
+				TC_LOG_ERROR("misc", "Attempt to assign charm AI to player %s who is charmed by non-creature %s.", GetGUID().ToString().c_str(), charmer->GetGUID().ToString().c_str());
+			}
+		}
+		else
+		{
+			// we allow the charmed PlayerAI to clean up
+			i_AI->OnCharmed(false);
+			// then delete it
+			delete i_AI;
+			// and restore our previous PlayerAI (if we had one)
+			i_AI = i_disabledAI;
+			i_disabledAI = nullptr;
+			// IsAIEnabled gets handled in the caller
+		}
+		break;
+	}
+	default:
+		TC_LOG_ERROR("misc", "Attempt to update charm AI for unit %s, which is neither player nor creature.", GetGUID().ToString().c_str());
+	}
 }
 
 CharmInfo* Unit::InitCharmInfo()
@@ -16024,15 +16059,11 @@ bool Unit::SetCharmedBy(Unit* charmer, CharmType type, AuraApplication const* au
         if (player->isAFK())
             player->ToggleAFK();
 
-		if (Creature* creatureCharmer = charmer->ToCreature()) // we are charmed by a creature
+		if (charmer->GetTypeId() == TYPEID_UNIT) // we are charmed by a creature
 		{
-			IsAIEnabled = true;
-			i_disabledAI = i_AI;
-			// set our AI to the charmer's custom charm AI if applicable
-			if (PlayerAI* charmAI = creatureCharmer->AI()->GetAIForCharmedPlayer(player))
-				i_AI = charmAI;
-			else // otherwise use the default charmed player AI
-				i_AI = new SimpleCharmedPlayerAI(player);
+			// change AI to charmed AI on next Update tick
+			NeedChangeAI = true;
+			IsAIEnabled = false;
 		}
         player->SetClientControl(this, false);
     }
@@ -16194,19 +16225,10 @@ void Unit::RemoveCharmedBy(Unit* charmer)
 	{
 		if (charmer->GetTypeId() == TYPEID_UNIT) // charmed by a creature, this means we had PlayerAI
 		{
-			if (i_AI)
-			{
-				// allow charmed player AI to clean up
-				i_AI->OnCharmed(false);
-				// then delete it
-				delete i_AI;
-				// and restore our previous playerAI (if we had one)
-				if ((i_AI = i_disabledAI))
-					i_disabledAI = nullptr;
-				else
+			        NeedChangeAI = true;
 					IsAIEnabled = false;
 			}
-		}
+		
 		player->SetClientControl(this, true);
 	}
     // a guardian should always have charminfo
