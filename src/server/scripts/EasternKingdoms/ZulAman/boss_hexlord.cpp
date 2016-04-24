@@ -29,19 +29,25 @@ EndScriptData */
 #include "SpellAuraEffects.h"
 #include "zulaman.h"
 
-#define YELL_AGGRO              "Da shadow gonna fall on you... "
-#define SOUND_YELL_AGGRO        12041
-#define YELL_SPIRIT_BOLTS       "Your soul gonna bleed!"
-#define SOUND_YELL_SPIRIT_BOLTS 12047
-#define YELL_DRAIN_POWER        "Darkness comin\' for you"
-#define SOUND_YELL_DRAIN_POWER  12046
-#define YELL_KILL_ONE           "Dis a nightmare ya don\' wake up from!"
-#define SOUND_YELL_KILL_ONE     12043
-#define YELL_KILL_TWO           "Azzaga choogo zinn!"
-#define SOUND_YELL_KILL_TWO     12044
-#define YELL_DEATH              "Dis not... da end of me..."
-#define SOUND_YELL_DEATH        12051
+enum Yells
+{
+	YELL_AGGRO = 0,
+	YELL_KILL_ONE = 1,
+	YELL_KILL_TWO = 2,
+	YELL_DRAIN_POWER = 3,
+	YELL_SPIRIT_BOLTS = 4,
+	YELL_DEATH = 5
+};
 
+enum Sounds
+{
+	SOUND_YELL_AGGRO = 12041,
+	SOUND_YELL_KILL_ONE = 12043,
+	SOUND_YELL_KILL_TWO = 12044,
+	SOUND_YELL_DRAIN_POWER = 12046,
+	SOUND_YELL_SPIRIT_BOLTS = 12047,
+	SOUND_YELL_DEATH = 12051
+};
 
 enum Creatures
 {
@@ -306,7 +312,7 @@ class boss_hexlord_malacrass : public CreatureScript
                 instance->SetData(DATA_HEXLORDEVENT, IN_PROGRESS);
 
                 DoZoneInCombat();
-                me->Yell(YELL_AGGRO, LANG_UNIVERSAL);
+				Talk(YELL_AGGRO, me);
                 DoPlaySoundToSet(me, SOUND_YELL_AGGRO);
 
                 for (uint8 i = 0; i < 4; ++i)
@@ -327,11 +333,11 @@ class boss_hexlord_malacrass : public CreatureScript
                 switch (urand(0, 1))
                 {
                     case 0:
-                        me->Yell(YELL_KILL_ONE, LANG_UNIVERSAL);
+						Talk(YELL_KILL_ONE, me);
                         DoPlaySoundToSet(me, SOUND_YELL_KILL_ONE);
                         break;
                     case 1:
-                        me->Yell(YELL_KILL_TWO, LANG_UNIVERSAL);
+						Talk(YELL_KILL_TWO, me);
                         DoPlaySoundToSet(me, SOUND_YELL_KILL_TWO);
                         break;
                 }
@@ -341,7 +347,7 @@ class boss_hexlord_malacrass : public CreatureScript
             {
                 instance->SetData(DATA_HEXLORDEVENT, DONE);
 
-                me->Yell(YELL_DEATH, LANG_UNIVERSAL);
+				Talk(YELL_DEATH, me);
                 DoPlaySoundToSet(me, SOUND_YELL_DEATH);
 
                 for (uint8 i = 0; i < 4; ++i)
@@ -415,7 +421,7 @@ class boss_hexlord_malacrass : public CreatureScript
                 if (DrainPower_Timer <= diff)
                 {
                     DoCast(me, SPELL_DRAIN_POWER, true);
-                    me->Yell(YELL_DRAIN_POWER, LANG_UNIVERSAL);
+					Talk(YELL_DRAIN_POWER, me);
                     DoPlaySoundToSet(me, SOUND_YELL_DRAIN_POWER);
                     DrainPower_Timer = urand(40000, 55000);    // must cast in 60 sec, or buff/debuff will disappear
                 } else DrainPower_Timer -= diff;
@@ -427,7 +433,7 @@ class boss_hexlord_malacrass : public CreatureScript
                     else
                     {
                         DoCast(me, SPELL_SPIRIT_BOLTS, false);
-                        me->Yell(YELL_SPIRIT_BOLTS, LANG_UNIVERSAL);
+                        Talk(YELL_SPIRIT_BOLTS, me);
                         DoPlaySoundToSet(me, SOUND_YELL_SPIRIT_BOLTS);
                         SpiritBolts_Timer = 40000;
                         SiphonSoul_Timer = 10000;    // ready to drain
