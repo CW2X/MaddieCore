@@ -456,9 +456,9 @@ bool StartDB()
     // Load databases
     DatabaseLoader loader("server.worldserver", DatabaseLoader::DATABASE_NONE);
     loader
-        .AddDatabase(WorldDatabase, "World")
-        .AddDatabase(CharacterDatabase, "Character")
-        .AddDatabase(LoginDatabase, "Login");
+		.AddDatabase(LoginDatabase, "Login")
+		.AddDatabase(CharacterDatabase, "Character")
+		.AddDatabase(WorldDatabase, "World");
 
     if (!loader.Load())
         return false;
