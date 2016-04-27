@@ -4,7 +4,7 @@ See [wiki](https://github.com/Joslyn-Maddie/MaddieCore/wiki) page for SQL instal
 
 ## Features and patches
  
- #Chatfilter = Profanity filter with features to block out specific words. Can also be used to disconnect or ban players
+ #Chatfilter - Profanity filter with features to block out specific words. Can also be used to disconnect or ban players
  when a set word is said in any chat. New words can be added into "chat_filter" sql table.
   
  #VAS - Scales npc HP/Damage to the ammount of players in a dungeon/raid. Enable/disable in Worldserver config.
