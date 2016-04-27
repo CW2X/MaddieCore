@@ -1,5 +1,7 @@
 Can no longer be merged with ElunaTrinityWotlk or Trinitycore so... Rename.
 
+See [wiki](https://github.com/Joslyn-Maddie/MaddieCore/wiki) page for SQL install guide.
+
 ## Features and patches
  
  #Chatfilter = Profanity filter with features to block out specific words. Can also be used to disconnect or ban players
@@ -31,13 +33,3 @@ Windows, Linux and Mac OSX.
 Detailed installation guides are available in the [wiki](http://www.trinitycore.info/display/tc/Installation+Guide) for
 Windows, Linux and Mac OSX.
 
-
-## Links
-
-[Site](http://www.trinitycore.org)
-
-[Wiki](http://trinitycore.info)
-
-[Documentation](http://www.trinitycore.net) (powered by Doxygen)
-
-[Forums](http://www.trinitycore.org/f/)
