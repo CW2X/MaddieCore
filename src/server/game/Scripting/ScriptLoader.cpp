@@ -39,6 +39,9 @@ void AddSC_SmartScripts();
 //TeleNPC2
 void AddSC_npc_teleport();
 
+//Barbershop
+void AddSC_CustomBarbershopCommand();
+
 //login BOA
 void AddSC_Player_BoA();
 
@@ -1623,6 +1626,8 @@ void AddCustomScripts()
     AddSC_summon();
 // end50
 // end51
+	//Barbershop
+	AddSC_CustomBarbershopCommand();
 	// login BoA
 	AddSC_Player_BoA();
 // end52

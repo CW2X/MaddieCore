@@ -47,6 +47,7 @@
 #include "WorldSession.h"
 #ifdef ELUNA
 #include "LuaEngine.h"
+#include "Config.h"
 #endif
 
 
@@ -1310,18 +1311,25 @@ void WorldSession::HandleAlterAppearance(WorldPacket& recvData)
     if (!Player::ValidateAppearance(_player->getRace(), _player->getClass(), _player->GetByteValue(PLAYER_BYTES_3, 0), bs_hair->hair_id, Color, _player->GetByteValue(PLAYER_BYTES, 1), bs_facialHair->hair_id, bs_skinColor ? bs_skinColor->hair_id : _player->GetByteValue(PLAYER_BYTES, 0)))
         return;
 
-    GameObject* go = _player->FindNearestGameObjectOfType(GAMEOBJECT_TYPE_BARBER_CHAIR, 5.0f);
-    if (!go)
-    {
-        SendBarberShopResult(BARBER_SHOP_RESULT_NOT_ON_CHAIR);
-        return;
-    }
+	if (!sConfigMgr->GetBoolDefault("EnableBarbershopEverywhere", false))
+	{
+		GameObject* go = _player->FindNearestGameObjectOfType(GAMEOBJECT_TYPE_BARBER_CHAIR, 5.0f);
+		if (!go)
+		{
+			WorldPacket data(SMSG_BARBER_SHOP_RESULT, 4);
+			data << uint32(2);
+			SendPacket(&data);
+			return;
+		}
 
-    if (_player->getStandState() != UNIT_STAND_STATE_SIT_LOW_CHAIR + go->GetGOInfo()->barberChair.chairheight)
-    {
-        SendBarberShopResult(BARBER_SHOP_RESULT_NOT_ON_CHAIR);
-        return;
-    }
+		if (_player->getStandState() != UNIT_STAND_STATE_SIT_LOW_CHAIR + go->GetGOInfo()->barberChair.chairheight)
+		{
+			WorldPacket data(SMSG_BARBER_SHOP_RESULT, 4);
+			data << uint32(2);
+			SendPacket(&data);
+			return;
+		}
+	}
 
     uint32 cost = _player->GetBarberShopCost(bs_hair->hair_id, Color, bs_facialHair->hair_id, bs_skinColor);
 

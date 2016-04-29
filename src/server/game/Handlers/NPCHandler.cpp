@@ -109,6 +109,12 @@ void WorldSession::SendShowMailBox(ObjectGuid guid)
     SendPacket(&data);
 }
 
+void WorldSession::SendShowBarberShop(ObjectGuid guid)
+{
+	WorldPacket data(SMSG_ENABLE_BARBER_SHOP, 8);
+	
+}
+
 void WorldSession::HandleTrainerListOpcode(WorldPacket& recvData)
 {
     ObjectGuid guid;

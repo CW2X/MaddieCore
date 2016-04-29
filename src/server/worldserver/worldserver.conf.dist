@@ -838,6 +838,20 @@ DisableWaterBreath = 4
 fatigue.enabled = 1
 
 #
+#
+#    EnableBarbershopEverywhere
+#        Description: Required security level for barbershop.
+
+#        Default:     0  - (Disabled)
+
+#                     1  - (Enabled)
+
+
+
+EnableBarbershopEverywhere = 1
+
+
+
 #    AllFlightPaths
 #        Description: Character knows all flight paths (of both factions) after creation.
 #        Default:     0 - (Disabled)
