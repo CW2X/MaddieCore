@@ -473,8 +473,8 @@ public:
             return false;
         }
 
-        handler->PSendSysMessage(LANG_YOU_CHANGE_ASPEED, ASpeed, targetNameLink.c_str());
-        if (handler->needReportToTarget(target))
+		handler->PSendSysMessage(LANG_YOU_CHANGE_ASPEED, targetNameLink.c_str(), ASpeed);
+		if (handler->needReportToTarget(target))
             ChatHandler(target->GetSession()).PSendSysMessage(LANG_YOURS_ASPEED_CHANGED, handler->GetNameLink().c_str(), ASpeed);
 
         target->SetSpeed(MOVE_WALK,    ASpeed, true);
@@ -521,8 +521,8 @@ public:
             return false;
         }
 
-        handler->PSendSysMessage(LANG_YOU_CHANGE_SPEED, Speed, targetNameLink.c_str());
-        if (handler->needReportToTarget(target))
+		handler->PSendSysMessage(LANG_YOU_CHANGE_SPEED, targetNameLink.c_str(), Speed);
+		if (handler->needReportToTarget(target))
             ChatHandler(target->GetSession()).PSendSysMessage(LANG_YOURS_SPEED_CHANGED, handler->GetNameLink().c_str(), Speed);
 
         target->SetSpeed(MOVE_RUN, Speed, true);
@@ -566,8 +566,8 @@ public:
             return false;
         }
 
-        handler->PSendSysMessage(LANG_YOU_CHANGE_SWIM_SPEED, Swim, targetNameLink.c_str());
-        if (handler->needReportToTarget(target))
+		handler->PSendSysMessage(LANG_YOU_CHANGE_SWIM_SPEED, targetNameLink.c_str(), Swim);
+		if (handler->needReportToTarget(target))
             ChatHandler(target->GetSession()).PSendSysMessage(LANG_YOURS_SWIM_SPEED_CHANGED, handler->GetNameLink().c_str(), Swim);
 
         target->SetSpeed(MOVE_SWIM, Swim, true);
@@ -611,8 +611,8 @@ public:
             return false;
         }
 
-        handler->PSendSysMessage(LANG_YOU_CHANGE_BACK_SPEED, BSpeed, targetNameLink.c_str());
-        if (handler->needReportToTarget(target))
+		handler->PSendSysMessage(LANG_YOU_CHANGE_BACK_SPEED, targetNameLink.c_str(), BSpeed);
+		if (handler->needReportToTarget(target))
             ChatHandler(target->GetSession()).PSendSysMessage(LANG_YOURS_BACK_SPEED_CHANGED, handler->GetNameLink().c_str(), BSpeed);
 
         target->SetSpeed(MOVE_RUN_BACK, BSpeed, true);
@@ -647,8 +647,8 @@ public:
         if (handler->HasLowerSecurity(target, ObjectGuid::Empty))
             return false;
 
-        handler->PSendSysMessage(LANG_YOU_CHANGE_FLY_SPEED, FSpeed, handler->GetNameLink(target).c_str());
-        if (handler->needReportToTarget(target))
+		handler->PSendSysMessage(LANG_YOU_CHANGE_FLY_SPEED, handler->GetNameLink(target).c_str(), FSpeed);
+		if (handler->needReportToTarget(target))
             ChatHandler(target->GetSession()).PSendSysMessage(LANG_YOURS_FLY_SPEED_CHANGED, handler->GetNameLink().c_str(), FSpeed);
 
         target->SetSpeed(MOVE_FLIGHT, FSpeed, true);
@@ -684,8 +684,8 @@ public:
             if (handler->HasLowerSecurity(player, ObjectGuid::Empty))
                 return false;
 
-            handler->PSendSysMessage(LANG_YOU_CHANGE_SIZE, Scale, handler->GetNameLink(player).c_str());
-            if (handler->needReportToTarget(player))
+			handler->PSendSysMessage(LANG_YOU_CHANGE_SIZE, handler->GetNameLink(player).c_str(), Scale);
+			if (handler->needReportToTarget(player))
                 ChatHandler(player->GetSession()).PSendSysMessage(LANG_YOURS_SIZE_CHANGED, handler->GetNameLink().c_str(), Scale);
         }
 
