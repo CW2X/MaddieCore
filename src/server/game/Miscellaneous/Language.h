@@ -208,6 +208,8 @@ enum TrinityStrings
     LANG_INVALID_GAMEOBJECT_TYPE        = 176,
     LANG_GAMEOBJECT_DAMAGED             = 177,
     LANG_GRID_POSITION                  = 178,
+	// 179-185 used in 6.x branch
+	LANG_TRANSPORT_POSITION             = 186,
     // Room for more level 1              179-199 not used
 
     // level 2 chat
