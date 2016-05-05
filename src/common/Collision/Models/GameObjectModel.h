@@ -84,6 +84,4 @@ private:
     std::unique_ptr<GameObjectModelOwnerBase> owner;
 };
 
-void LoadGameObjectModelList(std::string const& dataPath);
-
 #endif // _GAMEOBJECT_MODEL_H

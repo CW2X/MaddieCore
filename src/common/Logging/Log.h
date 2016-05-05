@@ -44,7 +44,11 @@ class Log
 
     public:
 
-		static Log* instance();
+        static Log* instance()
+        {
+            static Log instance;
+            return &instance;
+        }
 
         void Initialize(boost::asio::io_service* ioService);
         void LoadFromConfig();

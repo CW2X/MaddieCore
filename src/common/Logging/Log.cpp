@@ -320,12 +320,6 @@ void Log::Close()
     appenders.clear();
 }
 
-Log* Log::instance()
-{
-	static Log instance;
-	return &instance;
-}
-
 void Log::Initialize(boost::asio::io_service* ioService)
 {
     if (ioService)
