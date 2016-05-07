@@ -60,6 +60,153 @@ EndContentData */
 #include "CreatureTextMgr.h"
 #include "SmartAI.h"
 
+enum elderClearwater
+{
+	EVENT_CLEARWATER_ANNOUNCE = 1,
+
+	CLEARWATER_SAY_PRE = 0,
+	CLEARWATER_SAY_START = 1,
+	CLEARWATER_SAY_WINNER = 2,
+	CLEARWATER_SAY_END = 3,
+
+	QUEST_FISHING_DERBY = 24803,
+
+	DATA_DERBY_FINISHED = 1,
+};
+
+class npc_elder_clearwater : public CreatureScript
+{
+public:
+	npc_elder_clearwater() : CreatureScript("npc_elder_clearwater") { }
+
+	struct npc_elder_clearwaterAI : public ScriptedAI
+	{
+		npc_elder_clearwaterAI(Creature *c) : ScriptedAI(c)
+		{
+			events.Reset();
+			events.ScheduleEvent(EVENT_CLEARWATER_ANNOUNCE, 1000, 1, 0);
+			finished = false;
+			preWarning = false;
+			startWarning = false;
+			finishWarning = false;
+		}
+
+		EventMap events;
+		bool finished;
+		bool preWarning;
+		bool startWarning;
+		bool finishWarning;
+
+		uint32 GetData(uint32 type) const
+		{
+			if (type == DATA_DERBY_FINISHED)
+				return (uint32)finished;
+
+			return 0;
+		}
+
+		void DoAction(int32 param)
+		{
+			if (param == DATA_DERBY_FINISHED)
+				finished = true;
+		}
+
+		void UpdateAI(uint32 diff)
+		{
+			events.Update(diff);
+			switch (events.GetNextEventTime())
+			{
+			case EVENT_CLEARWATER_ANNOUNCE:
+			{
+				time_t curtime = time(NULL);
+				tm strdate;
+				localtime_r(&curtime, &strdate);
+
+				if (!preWarning && strdate.tm_hour == 13 && strdate.tm_min == 55)
+				{
+					sCreatureTextMgr->SendChat(me, CLEARWATER_SAY_PRE, 0, CHAT_MSG_MONSTER_YELL, LANG_UNIVERSAL, TEXT_RANGE_MAP);
+					preWarning = true;
+				}
+				if (!startWarning && strdate.tm_hour == 14 && strdate.tm_min == 0)
+				{
+					sCreatureTextMgr->SendChat(me, CLEARWATER_SAY_START, 0, CHAT_MSG_MONSTER_YELL, LANG_UNIVERSAL, TEXT_RANGE_MAP);
+					startWarning = true;
+				}
+				if (!finishWarning && strdate.tm_hour == 15 && strdate.tm_min == 0)
+				{
+					sCreatureTextMgr->SendChat(me, CLEARWATER_SAY_END, 0, CHAT_MSG_MONSTER_YELL, LANG_UNIVERSAL, TEXT_RANGE_MAP);
+					finishWarning = true;
+					// no one won - despawn
+					if (!finished)
+					{
+						me->DespawnOrUnsummon();
+						events.ExecuteEvent();
+						break;
+					}
+				}
+
+			//	events.RescheduleEvent(EVENT_CLEARWATER_ANNOUNCE, 1000);
+				break;
+			}
+			}
+		}
+	};
+
+	bool OnGossipHello(Player* player, Creature* creature)
+	{
+		QuestRelationBounds pObjectQR;
+		QuestRelationBounds pObjectQIR;
+
+		// pets also can have quests
+		if (creature)
+		{
+			pObjectQR = sObjectMgr->GetCreatureQuestRelationBounds(creature->GetEntry());
+			pObjectQIR = sObjectMgr->GetCreatureQuestInvolvedRelationBounds(creature->GetEntry());
+		}
+		else
+			return true;
+
+		QuestMenu &qm = player->PlayerTalkClass->GetQuestMenu();
+		qm.ClearMenu();
+
+		for (QuestRelations::const_iterator i = pObjectQIR.first; i != pObjectQIR.second; ++i)
+		{
+			uint32 quest_id = i->second;
+			Quest const* quest = sObjectMgr->GetQuestTemplate(quest_id);
+			if (!quest)
+				continue;
+
+			if (!creature->AI()->GetData(DATA_DERBY_FINISHED))
+			{
+				if (quest_id == QUEST_FISHING_DERBY)
+					player->PlayerTalkClass->SendQuestGiverRequestItems(quest, creature->GetGUID(), player->CanRewardQuest(quest, false), true);
+			}
+			else
+			{
+				if (quest_id != QUEST_FISHING_DERBY)
+					player->PlayerTalkClass->SendQuestGiverRequestItems(quest, creature->GetGUID(), player->CanRewardQuest(quest, false), true);
+			}
+		}
+
+		return true;
+	}
+
+	bool OnQuestReward(Player* player, Creature* creature, Quest const* quest, uint32 opt)
+	{
+		if (!creature->AI()->GetData(DATA_DERBY_FINISHED) && quest->GetQuestId() == QUEST_FISHING_DERBY)
+		{
+			creature->AI()->DoAction(DATA_DERBY_FINISHED);
+			sCreatureTextMgr->SendChat(creature, CLEARWATER_SAY_WINNER, player, CHAT_MSG_MONSTER_YELL, LANG_UNIVERSAL, TEXT_RANGE_MAP);
+		}
+		return true;
+	}
+
+
+	CreatureAI* GetAI(Creature* pCreature) const
+	{
+		return new npc_elder_clearwaterAI(pCreature);
+	}
+};
 /*########
 # npc_air_force_bots
 #########*/
@@ -2600,5 +2747,9 @@ void AddSC_npcs_special()
     new npc_imp_in_a_ball();
     new npc_stable_master();
 	new npc_train_wrecker();
+
+	//From SunwellCore
+
+	new npc_elder_clearwater();
 	
 }
