@@ -232,9 +232,7 @@ class ServerScript : public ScriptObject
         // reading and modifying it is safe. Make sure to check WorldSession pointer before usage, it might be null in case of auth packets
         virtual void OnPacketReceive(WorldSession* /*session*/, WorldPacket& /*packet*/) { }
 
-        // Called when an invalid (unknown opcode) packet is received by a client. The packet is a reference to the orignal
-        // packet; not a copy. This allows you to actually handle unknown packets (for whatever purpose).
-        virtual void OnUnknownPacketReceive(WorldSession* /*session*/, WorldPacket& /*packet*/) { }
+      
 };
 
 class WorldScript : public ScriptObject

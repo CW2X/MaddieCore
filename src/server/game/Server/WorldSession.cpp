@@ -287,15 +287,7 @@ bool WorldSession::Update(uint32 diff, PacketFilter& updater)
 
 	while (m_Socket && _recvQueue.next(packet, updater))
     {
-        if (packet->GetOpcode() >= NUM_MSG_TYPES)
-        {
-            TC_LOG_ERROR("network.opcode", "Received non-existed opcode %s from %s", GetOpcodeNameForLogging(packet->GetOpcode()).c_str()
-                            , GetPlayerInfo().c_str());
-            sScriptMgr->OnUnknownPacketReceive(this, *packet);
-        }
-        else
-        {
-            OpcodeHandler& opHandle = opcodeTable[packet->GetOpcode()];
+		OpcodeHandler const& opHandle = opcodeTable[packet->GetOpcode()];
             try
             {
                 switch (opHandle.status)
@@ -311,8 +303,7 @@ bool WorldSession::Update(uint32 diff, PacketFilter& updater)
 								requeuePackets.push_back(packet);
 
                                 deletePacket = false;
-                                QueuePacket(packet);
-                                //! Log
+                               
                                 TC_LOG_DEBUG("network", "Re-enqueueing packet with opcode %s with with status STATUS_LOGGEDIN. "
                                     "Player is currently not in world yet.", GetOpcodeNameForLogging(packet->GetOpcode()).c_str());
                             }
@@ -333,10 +324,10 @@ bool WorldSession::Update(uint32 diff, PacketFilter& updater)
                         if (!_player && !m_playerRecentlyLogout && !m_playerLogout) // There's a short delay between _player = null and m_playerRecentlyLogout = true during logout
                             LogUnexpectedOpcode(packet, "STATUS_LOGGEDIN_OR_RECENTLY_LOGGOUT",
                                 "the player has not logged in yet and not recently logout");
-                        else if (AntiDOS.EvaluateOpcode(*packet, currentTime))
-                        {
-                            // not expected _player or must checked in packet handler
-                            sScriptMgr->OnPacketReceive(this, *packet);
+                         else if(AntiDOS.EvaluateOpcode(*packet, currentTime))
+                    {
+							// not expected _player or must checked in packet hanlder
+							sScriptMgr->OnPacketReceive(this, *packet);
 #ifdef ELUNA
                             if (!sEluna->OnPacketReceive(this, *packet))
                                 break;
@@ -390,18 +381,19 @@ bool WorldSession::Update(uint32 diff, PacketFilter& updater)
                             , GetPlayerInfo().c_str());
                         break;
                     case STATUS_UNHANDLED:
-                        TC_LOG_DEBUG("network.opcode", "Received not handled opcode %s from %s", GetOpcodeNameForLogging(packet->GetOpcode()).c_str()
+						TC_LOG_ERROR("network.opcode", "Received not handled opcode %s from %s", GetOpcodeNameForLogging(packet->GetOpcode()).c_str()
+
                             , GetPlayerInfo().c_str());
                         break;
                 }
             }
             catch (ByteBufferException const&)
             {
-                TC_LOG_ERROR("misc", "WorldSession::Update ByteBufferException occured while parsing a packet (opcode: %u) from client %s, accountid=%i. Skipped packet.",
-                        packet->GetOpcode(), GetRemoteAddress().c_str(), GetAccountId());
+				TC_LOG_ERROR("network", "WorldSession::Update ByteBufferException occured while parsing a packet (opcode: %u) from client %s, accountid=%i. Skipped packet.",
+					packet->GetOpcode(), GetRemoteAddress().c_str(), GetAccountId());
                 packet->hexlike();
             }
-        }
+        
 
         if (deletePacket)
             delete packet;
