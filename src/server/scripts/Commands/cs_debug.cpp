@@ -1044,8 +1044,9 @@ public:
             return false;
 
         uint32 animId = atoi((char*)args);
-        handler->GetSession()->GetPlayer()->HandleEmoteCommand(animId);
-        return true;
+		if (Unit* unit = handler->getSelectedUnit())
+			unit->HandleEmoteCommand(animId);
+		return true;
     }
 
     static bool HandleDebugLoSCommand(ChatHandler* handler, char const* /*args*/)
