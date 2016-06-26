@@ -2829,6 +2829,8 @@ bool Creature::FocusTarget(Spell const* focusSpell, WorldObject const* target)
 	}
 
 	// tell the creature that it should reacquire its current target after the cast is done (this is handled in ::Attack)
+	// player pets don't need to do this, as they automatically reacquire their target on focus release
+	if (!IsPet())
 	MustReacquireTarget();
 
 	bool canTurnDuringCast = !focusSpell->GetSpellInfo()->HasAttribute(SPELL_ATTR5_DONT_TURN_DURING_CAST);
@@ -2879,7 +2881,10 @@ void Creature::ReleaseFocus(Spell const* focusSpell, bool withDelay)
 	if (focusSpell && focusSpell != _focusSpell)
         return;
 
-	SetGuidValue(UNIT_FIELD_TARGET, ObjectGuid::Empty);
+	if (IsPet() && GetVictim()) // player pets do not use delay system
+		SetGuidValue(UNIT_FIELD_TARGET, EnsureVictim()->GetGUID());
+	else 
+		SetGuidValue(UNIT_FIELD_TARGET, ObjectGuid::Empty);
 
 	if (_focusSpell->GetSpellInfo()->HasAttribute(SPELL_ATTR5_DONT_TURN_DURING_CAST))
 		ClearUnitState(UNIT_STATE_CANNOT_TURN);
