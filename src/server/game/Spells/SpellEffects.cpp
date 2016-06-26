@@ -250,14 +250,14 @@ void Spell::EffectResurrectNew(SpellEffIndex effIndex)
 
     Player* target = unitTarget->ToPlayer();
 
-    if (target->isResurrectRequested())       // already have one active request
-        return;
+	if (target->IsResurrectRequested())       // already have one active request
+		return;
 
     uint32 health = damage;
     uint32 mana = m_spellInfo->Effects[effIndex].MiscValue;
     ExecuteLogEffectResurrect(effIndex, target);
-    target->setResurrectRequestData(m_caster->GetGUID(), m_caster->GetMapId(), m_caster->GetPositionX(), m_caster->GetPositionY(), m_caster->GetPositionZ(), health, mana);
-    SendResurrectRequest(target);
+	target->SetResurrectRequestData(m_caster, health, mana, 0);
+	SendResurrectRequest(target);
 }
 
 void Spell::EffectInstaKill(SpellEffIndex /*effIndex*/)
@@ -4542,7 +4542,7 @@ void Spell::EffectResurrect(SpellEffIndex effIndex)
 
     Player* target = unitTarget->ToPlayer();
 
-    if (target->isResurrectRequested())       // already have one active request
+    if (target->IsResurrectRequested())       // already have one active request
         return;
 
     uint32 health = target->CountPctFromMaxHealth(damage);
@@ -4550,8 +4550,8 @@ void Spell::EffectResurrect(SpellEffIndex effIndex)
 
     ExecuteLogEffectResurrect(effIndex, target);
 
-    target->setResurrectRequestData(m_caster->GetGUID(), m_caster->GetMapId(), m_caster->GetPositionX(), m_caster->GetPositionY(), m_caster->GetPositionZ(), health, mana);
-    SendResurrectRequest(target);
+	target->SetResurrectRequestData(m_caster, health, mana, 0);
+	SendResurrectRequest(target);
 }
 
 void Spell::EffectAddExtraAttacks(SpellEffIndex effIndex)

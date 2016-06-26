@@ -822,21 +822,15 @@ void WorldSession::HandleResurrectResponseOpcode(WorldPacket& recvData)
 
     if (status == 0)
     {
-        GetPlayer()->clearResurrectRequestData();           // reject
-        return;
+		GetPlayer()->ClearResurrectRequestData();           // reject
+		return;
     }
 
-	if (GetPlayer()->IsValidGhoulResurrectRequest(guid))
-	{
-		GetPlayer()->GhoulResurrect();
+	if (!GetPlayer()->IsResurrectRequestedBy(guid))
+	
 		return;
-	}
-
-
-    if (!GetPlayer()->isResurrectRequestedBy(guid))
-        return;
-
-    GetPlayer()->ResurrectUsingRequestData();
+	  
+	    GetPlayer()->ResurrectUsingRequestData();
 }
 
 void WorldSession::SendAreaTriggerMessage(const char* Text, ...)

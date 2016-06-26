@@ -65,8 +65,6 @@ enum DeathKnightSpells
     SPELL_DK_UNHOLY_PRESENCE_TRIGGERED          = 49772,
     SPELL_DK_WILL_OF_THE_NECROPOLIS_TALENT_R1   = 49189,
     SPELL_DK_WILL_OF_THE_NECROPOLIS_AURA_R1     = 52284,
-	SPELL_DK_RAISE_ALLY_INITIAL = 61999,
-	SPELL_DK_RAISE_ALLY = 46619,
 	SPELL_DK_GHOUL_THRASH = 47480
 };
 
@@ -1733,36 +1731,40 @@ public:
 	{
 		PrepareSpellScript(spell_dk_raise_ally_initial_SpellScript);
 
-		bool Validate(SpellInfo const* /*spellInfo*/) override
+		bool Validate(SpellInfo const* spellInfo) override
 		{
-			if (!sSpellMgr->GetSpellInfo(SPELL_DK_RAISE_ALLY_INITIAL))
+			if (!sSpellMgr->GetSpellInfo(uint32(spellInfo->Effects[EFFECT_0].CalcValue())))
 				return false;
 			return true;
 		}
 
+		bool Load() override
+		{
+			return GetCaster()->GetTypeId() == TYPEID_PLAYER;
+		}
+
 		SpellCastResult CheckCast()
 		{
-			// Raise Ally cannot be casted on alive players
 			Unit* target = GetExplTargetUnit();
 			if (!target)
 				return SPELL_FAILED_NO_VALID_TARGETS;
 			if (target->IsAlive())
 				return SPELL_FAILED_TARGET_NOT_DEAD;
-			if (Player* playerCaster = GetCaster()->ToPlayer())
-				if (playerCaster->InArena())
-					return SPELL_FAILED_NOT_IN_ARENA;
 			if (target->IsGhouled())
 				return SPELL_FAILED_CANT_DO_THAT_RIGHT_NOW;
-
 			return SPELL_CAST_OK;
 		}
 
 		void HandleDummy(SpellEffIndex /*effIndex*/)
 		{
-			Player* caster = GetCaster()->ToPlayer();
-			Player* target = GetHitPlayer();
-			if (caster && target)
-				caster->SendGhoulResurrectRequest(target);
+			
+			if (Player* target = GetHitPlayer())
+			{
+				if (target->IsResurrectRequested()) // already have one active request
+					return;
+				target->SetResurrectRequestData(GetCaster(), 0, 0, uint32(GetEffectValue()));
+				GetSpell()->SendResurrectRequest(target);
+			}
 		}
 
 		void Register() override
@@ -1785,12 +1787,8 @@ public:
 
 	void UpdateAI(uint32 /*diff*/) override
 	{
-		if (Creature* ghoul = ObjectAccessor::GetCreature(*me, _ghoulGUID))
-		{
-			if (!ghoul->IsAlive())
-				me->RemoveAura(SPELL_DK_RAISE_ALLY);
-		}
-		else
+		Creature* ghoul = ObjectAccessor::GetCreature(*me, _ghoulGUID);
+		if (!ghoul || !ghoul->IsAlive())
 			me->RemoveAura(SPELL_DK_RAISE_ALLY);
 	}
 
@@ -1799,28 +1797,25 @@ private:
 };
 
 // 46619 - Raise Ally
+#define DkRaiseAllyScriptName "spell_dk_raise_ally"
 class spell_dk_raise_ally : public SpellScriptLoader
 {
 public:
-	spell_dk_raise_ally() : SpellScriptLoader("spell_dk_raise_ally") { }
+	spell_dk_raise_ally() : SpellScriptLoader(DkRaiseAllyScriptName) { }
 
 	class spell_dk_raise_ally_SpellScript : public SpellScript
 	{
 		PrepareSpellScript(spell_dk_raise_ally_SpellScript);
 
-		bool Validate(SpellInfo const* /*spellInfo*/) override
+		bool Load() override
 		{
-			if (!sSpellMgr->GetSpellInfo(SPELL_DK_RAISE_ALLY))
-				return false;
-			return true;
+			return GetCaster()->GetTypeId() == TYPEID_PLAYER;
 		}
 
 		void SendText()
 		{
-			Player* caster = GetCaster()->ToPlayer();
-			Unit* original = GetOriginalCaster();
-			if (caster && original)
-				original->Whisper(TEXT_RISE_ALLY, caster, true);
+			if (Unit* original = GetOriginalCaster())
+				original->Whisper(TEXT_RISE_ALLY, GetCaster()->ToPlayer(), true);
 		}
 
 		void HandleSummon(SpellEffIndex effIndex)
@@ -1839,9 +1834,8 @@ public:
 			SummonPropertiesEntry const* properties = sSummonPropertiesStore.LookupEntry(829);
 
 			uint32 duration = uint32(GetSpellInfo()->GetDuration());
-			Position pos = caster->GetPosition();
 
-			TempSummon* summon = originalCaster->GetMap()->SummonCreature(entry, pos, properties, duration, originalCaster, GetSpellInfo()->Id);
+			TempSummon* summon = originalCaster->GetMap()->SummonCreature(entry, *GetHitDest(), properties, duration, originalCaster, GetSpellInfo()->Id);
 			if (!summon)
 				return;
 
@@ -1868,15 +1862,25 @@ public:
 			// SMSG_POWER_UPDATE is sent
 			summon->SetMaxPower(POWER_ENERGY, 100);
 
-			if (Player* player = GetCaster()->ToPlayer())
-				player->SetGhoulResurrectGhoulGUID(summon->GetGUID());
+			_ghoulGuid = summon->GetGUID();
+		}
+
+		void SetGhoul(SpellEffIndex /*effIndex*/)
+		{
+			if (Aura* aura = GetHitAura())
+				if (spell_dk_raise_ally_AuraScript* script = dynamic_cast<spell_dk_raise_ally_AuraScript*>(aura->GetScriptByName(DkRaiseAllyScriptName)))
+					script->SetGhoulGuid(_ghoulGuid);
 		}
 
 		void Register() override
 		{
 			AfterHit += SpellHitFn(spell_dk_raise_ally_SpellScript::SendText);
 			OnEffectHit += SpellEffectFn(spell_dk_raise_ally_SpellScript::HandleSummon, EFFECT_0, SPELL_EFFECT_SUMMON);
+			OnEffectHitTarget += SpellEffectFn(spell_dk_raise_ally_SpellScript::SetGhoul, EFFECT_1, SPELL_EFFECT_APPLY_AURA);
 		}
+
+	private:
+		ObjectGuid _ghoulGuid;
 	};
 
 	SpellScript* GetSpellScript() const override
@@ -1895,31 +1899,32 @@ public:
 			oldAIState = false;
 		}
 
-	private:
-		bool Validate(SpellInfo const* /*spellInfo*/) override
+		void SetGhoulGuid(ObjectGuid guid)
 		{
-			if (!sSpellMgr->GetSpellInfo(SPELL_DK_RAISE_ALLY))
-				return false;
-			return true;
+			ghoulGuid = guid;
+		}
+
+	private:
+		bool Load() override
+		{
+			return GetUnitOwner()->GetTypeId() == TYPEID_PLAYER;
 		}
 
 		void OnApply(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
 		{
 			Player* player = GetTarget()->ToPlayer();
-			if (!player || player->GetGhoulResurrectGhoulGUID().IsEmpty())
+			if (ghoulGuid.IsEmpty())
 				return;
 
 			oldAI = player->AI();
 			oldAIState = player->IsAIEnabled;
-			player->SetAI(new player_ghoulAI(player, player->GetGhoulResurrectGhoulGUID()));
+			player->SetAI(new player_ghoulAI(player, ghoulGuid));
 			player->IsAIEnabled = true;
 		}
 
 		void OnRemove(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
 		{
 			Player* player = GetTarget()->ToPlayer();
-			if (!player)
-				return;
 
 			player->IsAIEnabled = oldAIState;
 			PlayerAI* thisAI = player->AI();
@@ -1927,13 +1932,12 @@ public:
 			delete thisAI;
 
 			// Dismiss ghoul if necessary
-			if (Creature* ghoul = ObjectAccessor::GetCreature(*player, player->GetGhoulResurrectGhoulGUID()))
+			if (Creature* ghoul = ObjectAccessor::GetCreature(*player, ghoulGuid))
 			{
-				ghoul->RemoveCharmedBy(nullptr);
+				ghoul->RemoveCharmedBy(player);
 				ghoul->DespawnOrUnsummon(1000);
 			}
 
-			player->SetGhoulResurrectGhoulGUID(ObjectGuid::Empty);
 			player->RemoveAura(SPELL_GHOUL_FRENZY);
 		}
 
@@ -1943,7 +1947,8 @@ public:
 			AfterEffectRemove += AuraEffectRemoveFn(spell_dk_raise_ally_AuraScript::OnRemove, EFFECT_1, SPELL_AURA_DUMMY, AURA_EFFECT_HANDLE_REAL);
 		}
 
-		UnitAI* oldAI;
+		ObjectGuid ghoulGuid;
+		PlayerAI* oldAI;
 		bool oldAIState;
 	};
 
@@ -1965,7 +1970,7 @@ public:
 
 		bool Validate(SpellInfo const* /*spellInfo*/) override
 		{
-			if (!sSpellMgr->GetSpellInfo(SPELL_DK_GHOUL_THRASH))
+			if (!sSpellMgr->GetSpellInfo(SPELL_GHOUL_FRENZY))
 				return false;
 			return true;
 		}
@@ -2002,32 +2007,35 @@ public:
 
 void AddSC_deathknight_spell_scripts()
 {
-    new spell_dk_anti_magic_shell_raid();
-    new spell_dk_anti_magic_shell_self();
-    new spell_dk_anti_magic_zone();
-    new spell_dk_blood_boil();
-    new spell_dk_blood_gorged();
-    new spell_dk_bloodworms();
-    new spell_dk_corpse_explosion();
-    new spell_dk_death_and_decay();
-    new spell_dk_death_coil();
-    new spell_dk_death_gate();
-    new spell_dk_death_grip();
-    new spell_dk_death_pact();
-    new spell_dk_death_strike();
-    new spell_dk_ghoul_explode();
-    new spell_dk_icebound_fortitude();
-    new spell_dk_improved_blood_presence();
-    new spell_dk_improved_frost_presence();
-    new spell_dk_improved_unholy_presence();
-    new spell_dk_pestilence();
-    new spell_dk_presence();
-    new spell_dk_raise_dead();
-    new spell_dk_rune_tap_party();
-    new spell_dk_scent_of_blood();
-    new spell_dk_scourge_strike();
-    new spell_dk_spell_deflection();
-    new spell_dk_vampiric_blood();
-    new spell_dk_will_of_the_necropolis();
-    new spell_dk_death_grip_initial();
+	new spell_dk_anti_magic_shell_raid();
+	new spell_dk_anti_magic_shell_self();
+	new spell_dk_anti_magic_zone();
+	new spell_dk_blood_boil();
+	new spell_dk_blood_gorged();
+	new spell_dk_bloodworms();
+	new spell_dk_corpse_explosion();
+	new spell_dk_death_and_decay();
+	new spell_dk_death_coil();
+	new spell_dk_death_gate();
+	new spell_dk_death_grip();
+	new spell_dk_death_pact();
+	new spell_dk_death_strike();
+	new spell_dk_ghoul_explode();
+	new spell_dk_icebound_fortitude();
+	new spell_dk_improved_blood_presence();
+	new spell_dk_improved_frost_presence();
+	new spell_dk_improved_unholy_presence();
+	new spell_dk_pestilence();
+	new spell_dk_presence();
+	new spell_dk_raise_dead();
+	new spell_dk_rune_tap_party();
+	new spell_dk_scent_of_blood();
+	new spell_dk_scourge_strike();
+	new spell_dk_spell_deflection();
+	new spell_dk_vampiric_blood();
+	new spell_dk_will_of_the_necropolis();
+	new spell_dk_death_grip_initial();
+	new spell_dk_raise_ally_initial();
+	new spell_dk_raise_ally();
+	new spell_dk_ghoul_thrash();
 }
