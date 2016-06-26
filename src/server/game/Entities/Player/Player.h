@@ -1669,7 +1669,7 @@ class Player : public Unit, public GridObject<Player>
 			_resurrectionData.reset();
 		}
 
-		bool IsResurrectRequestedBy(uint64 guid) const
+		bool IsResurrectRequestedBy(ObjectGuid const& guid) const
 		{
 			if (!IsResurrectRequested())
 				return false;
