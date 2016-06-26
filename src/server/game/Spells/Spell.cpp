@@ -5918,8 +5918,7 @@ bool Spell::CanAutoCast(Unit* target)
 			switch (sSpellMgr->CheckSpellGroupStackRules(GetSpellInfo(), (*auraIt)->GetSpellInfo()))
 
             {
-			case SPELL_GROUP_STACK_RULE_DEFAULT:
-				break;
+			
 			case SPELL_GROUP_STACK_RULE_EXCLUSIVE:
 
                         return false;
@@ -5932,6 +5931,9 @@ bool Spell::CanAutoCast(Unit* target)
 				if (abs(GetSpellInfo()->Effects[i].BasePoints) <= abs((*auraIt)->GetAmount()))
 					return false;
 				break;
+		    case SPELL_GROUP_STACK_RULE_DEFAULT:
+                default:
+                    break;
             }
         }
        
