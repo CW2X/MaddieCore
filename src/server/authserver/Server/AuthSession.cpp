@@ -277,9 +277,7 @@ void AuthSession::SendPacket(ByteBuffer& packet)
 		MessageBuffer buffer;
 		buffer.Write(packet.contents(), packet.size());
 
-		std::unique_lock<std::mutex> guard(_writeLock);
-
-		QueuePacket(std::move(buffer), guard);
+		QueuePacket(std::move(buffer));
 	}
 }
 
