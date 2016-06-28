@@ -598,7 +598,9 @@ class boss_deathbringer_saurfang : public CreatureScript
                 if (target->GetTransport())
                     return false;
 
-                return true;
+				return
+				
+			BossAI::CanAIAttack(target);
             }
 
             static uint32 const FightWonValue;
