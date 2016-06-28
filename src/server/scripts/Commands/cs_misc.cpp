@@ -1065,13 +1065,6 @@ public:
 			return false;
 		}
 
-		if (area->exploreFlag < 0)
-
-        {
-            handler->SendSysMessage(LANG_BAD_VALUE);
-            handler->SetSentErrorMessage(true);
-            return false;
-        }
 
 		int32 offset = area->exploreFlag / 32;
 		if (offset >= PLAYER_EXPLORED_ZONES_SIZE)
@@ -1110,12 +1103,6 @@ public:
 			return false;
 		}
 
-		if (area->exploreFlag < 0)
-        {
-            handler->SendSysMessage(LANG_BAD_VALUE);
-            handler->SetSentErrorMessage(true);
-            return false;
-        }
 
 		int32 offset = area->exploreFlag / 32;
 		if (offset >= PLAYER_EXPLORED_ZONES_SIZE)
