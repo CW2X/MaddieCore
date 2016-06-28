@@ -15,9 +15,12 @@ See [wiki](https://github.com/Joslyn-Maddie/MaddieCore/wiki) page for SQL instal
  
  #Reforging
  
- #Enchanter NPC
+ #AIO NPC (Enchanter, buffs, professions)
   
  #LoginBoA
+ 
+ #Mobile Barbershop
+ 
  
  And a bunch more.
 
