@@ -51,11 +51,10 @@ struct WMOAreaTableTripple
 typedef std::map<WMOAreaTableTripple, WMOAreaTableEntry const*> WMOAreaInfoByTripple;
 typedef std::multimap<uint32, CharSectionsEntry const*> CharSectionsMap;
 
-DBCStorage <AreaTableEntry> sAreaStore(AreaTableEntryfmt);
+DBCStorage <AreaTableEntry> sAreaTableStore(AreaTableEntryfmt);
 DBCStorage <AreaGroupEntry> sAreaGroupStore(AreaGroupEntryfmt);
 DBCStorage <AreaPOIEntry> sAreaPOIStore(AreaPOIEntryfmt);
-static AreaFlagByAreaID sAreaFlagByAreaID;
-static AreaFlagByMapID sAreaFlagByMapID;                    // for instances without generated *.map files
+
 
 static WMOAreaInfoByTripple sWMOAreaInfoByTripple;
 
@@ -286,21 +285,9 @@ void LoadDBCStores(const std::string& dataPath)
     StoreProblemList bad_dbc_files;
     uint32 availableDbcLocales = 0xFFFFFFFF;
 
-    LoadDBC(availableDbcLocales, bad_dbc_files, sAreaStore,                   dbcPath, "AreaTable.dbc");
+	LoadDBC(availableDbcLocales, bad_dbc_files, sAreaTableStore, dbcPath, "AreaTable.dbc");
 
-    // must be after sAreaStore loading
-    for (uint32 i = 0; i < sAreaStore.GetNumRows(); ++i)           // areaflag numbered from 0
-    {
-        if (AreaTableEntry const* area = sAreaStore.LookupEntry(i))
-        {
-            // fill AreaId->DBC records
-            sAreaFlagByAreaID.insert(AreaFlagByAreaID::value_type(uint16(area->ID), area->exploreFlag));
-
-            // fill MapId->DBC records (skip sub zones and continents)
-            if (area->zone == 0 && area->mapid != 0 && area->mapid != 1 && area->mapid != 530 && area->mapid != 571)
-                sAreaFlagByMapID.insert(AreaFlagByMapID::value_type(area->mapid, area->exploreFlag));
-        }
-    }
+   
 
     LoadDBC(availableDbcLocales, bad_dbc_files, sAchievementStore,            dbcPath, "Achievement.dbc", &CustomAchievementfmt, &CustomAchievementIndex);
     LoadDBC(availableDbcLocales, bad_dbc_files, sAchievementCriteriaStore,    dbcPath, "Achievement_Criteria.dbc");
@@ -724,8 +711,8 @@ void LoadDBCStores(const std::string& dataPath)
         exit(1);
     }
 
-    // Check loaded DBC files proper version
-    if (!sAreaStore.LookupEntry(3617)              ||       // last area (areaflag) added in 3.3.5a
+	// Check loaded DBC files proper version
+	if (!sAreaTableStore.LookupEntry(4987)         ||       // last area added in 3.3.5a
         !sCharTitlesStore.LookupEntry(177)         ||       // last char title added in 3.3.5a
         !sGemPropertiesStore.LookupEntry(1629)     ||       // last added spell in 3.3.5a
         !sItemStore.LookupEntry(56806)             ||       // last gem property added in 3.3.5a
@@ -777,14 +764,7 @@ uint32 GetTalentSpellCost(uint32 spellId)
     return 0;
 }
 
-int32 GetAreaFlagByAreaID(uint32 area_id)
-{
-    AreaFlagByAreaID::iterator i = sAreaFlagByAreaID.find(area_id);
-    if (i == sAreaFlagByAreaID.end())
-        return -1;
 
-    return i->second;
-}
 
 WMOAreaTableEntry const* GetWMOAreaTableEntryByTripple(int32 rootid, int32 adtid, int32 groupid)
 {
@@ -794,25 +774,7 @@ WMOAreaTableEntry const* GetWMOAreaTableEntryByTripple(int32 rootid, int32 adtid
         return i->second;
 }
 
-AreaTableEntry const* GetAreaEntryByAreaID(uint32 area_id)
-{
-    int32 areaflag = GetAreaFlagByAreaID(area_id);
-    if (areaflag < 0)
-        return NULL;
 
-    return sAreaStore.LookupEntry(areaflag);
-}
-
-AreaTableEntry const* GetAreaEntryByAreaFlagAndMap(uint32 area_flag, uint32 map_id)
-{
-    if (area_flag)
-        return sAreaStore.LookupEntry(area_flag);
-
-    if (MapEntry const* mapEntry = sMapStore.LookupEntry(map_id))
-        return GetAreaEntryByAreaID(mapEntry->linked_zone);
-
-    return NULL;
-}
 
 char const* GetRaceName(uint8 race, uint8 locale)
 {
@@ -826,14 +788,7 @@ char const* GetClassName(uint8 class_, uint8 locale)
     return classEntry ? classEntry->name[locale] : NULL;
 }
 
-uint32 GetAreaFlagByMapId(uint32 mapid)
-{
-    AreaFlagByMapID::iterator i = sAreaFlagByMapID.find(mapid);
-    if (i == sAreaFlagByMapID.end())
-        return 0;
-    else
-        return i->second;
-}
+
 
 uint32 GetVirtualMapForMapAndZone(uint32 mapid, uint32 zoneId)
 {
