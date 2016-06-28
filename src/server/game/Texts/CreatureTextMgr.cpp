@@ -228,43 +228,12 @@ uint32 CreatureTextMgr::SendChat(Creature* source, uint8 textGroup, WorldObject 
         tempGroup = textGroupContainer;
     }
 
-    uint8 count = 0;
-    float lastChance = -1;
-    bool isEqualChanced = true;
+	auto iter = Trinity::Containers::SelectRandomWeightedContainerElement(tempGroup, [](CreatureTextEntry const& t) -> double
 
-    float totalChance = 0;
-
-    for (CreatureTextGroup::const_iterator iter = tempGroup.begin(); iter != tempGroup.end(); ++iter)
-    {
-        if (lastChance >= 0 && lastChance != iter->probability)
-            isEqualChanced = false;
-
-        lastChance = iter->probability;
-        totalChance += iter->probability;
-        ++count;
-    }
-
-    int32 offset = -1;
-    if (!isEqualChanced)
-    {
-        for (CreatureTextGroup::const_iterator iter = tempGroup.begin(); iter != tempGroup.end(); ++iter)
-        {
-            uint32 chance = uint32(iter->probability);
-            uint32 r = urand(0, 100);
-            ++offset;
-            if (r <= chance)
-                break;
-        }
-    }
-
-    uint32 pos = 0;
-    if (isEqualChanced || offset < 0)
-        pos = urand(0, count - 1);
-    else if (offset >= 0)
-        pos = offset;
-
-    CreatureTextGroup::const_iterator iter = tempGroup.begin() + pos;
-
+	{
+       return t.probability;
+	});
+    
     ChatMsg finalType = (msgType == CHAT_MSG_ADDON) ? iter->type : msgType;
     Language finalLang = (language == LANG_ADDON) ? iter->lang : language;
     uint32 finalSound = sound ? sound : iter->sound;
@@ -293,9 +262,8 @@ uint32 CreatureTextMgr::SendChat(Creature* source, uint8 textGroup, WorldObject 
         SendChatPacket(finalSource, builder, finalType, whisperTarget, range, team, gmOnly);
     }
 
-    if (isEqualChanced || totalChance == 100.0f)
+    
         SetRepeatId(source, textGroup, iter->id);
-
     return iter->duration;
 }
 
