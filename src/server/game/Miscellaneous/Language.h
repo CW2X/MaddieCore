@@ -1199,37 +1199,14 @@ enum TrinityStrings
     LANG_BG_SA_ROUND_TWO_START_HALF_MINUTE  = 10066, //Round 2 begins in 30 seconds. Prepare yourselves!
 
     // Use for custom patches             11000-11999
-    LANG_AUTO_BROADCAST                 = 11000,
-    LANG_INVALID_REALMID                = 11001,
-    // Prepatch by LordPsyan
-    // 01
-    // 02
-    // 03
-    // 04
-    // 05
-    // 06
-    // 07
-    // 08
-    // 09
-    // 10
-    // 11
-    // 12
-    // 13
-    // 14
-    // 15
-    // 16
-    // 17
-    // 18
-    // 19
-    // 20
-    // Visit http://www.realmsofwarcraft.com/bb for forums and information
-    //
-    // End of prepatch
+    LANG_AUTO_BROADCAST                           = 11000,
+    LANG_INVALID_REALMID                          = 11001,
+   
     // Show Kick in world
-    LANG_COMMAND_KICKMESSAGE_WORLD = 11002,
+    LANG_COMMAND_KICKMESSAGE_WORLD                = 11002,
 
     // Show Mute in world
-    LANG_COMMAND_MUTEMESSAGE_WORLD = 11003,
+    LANG_COMMAND_MUTEMESSAGE_WORLD                = 11003,
 
     // Show Ban in world
     LANG_BAN_CHARACTER_YOUBANNEDMESSAGE_WORLD     = 11004,
@@ -1239,34 +1216,16 @@ enum TrinityStrings
 
     LANG_NPCINFO_INHABIT_TYPE                     = 11008,
     LANG_NPCINFO_FLAGS_EXTRA                      = 11009,
-    // Prepatch by LordPsyan
-    // 21
-    // 22
-    // 23
-    // 24
-    // 25
-    // 26
-    // 27
-    // 28
-    // 29
-    // 30
-    // 31
-    // 32
-    // 33
-    // 34
-    // 35
-    // 36
-    // 37
-   LANG_LOTTERY_ANNOUNCE_JACKPOT = 11010,
-   LANG_LOTTERY_ANNOUNCE_JACKPOT_M_PLAYERS = 11011,
-   LANG_LOTTERY_ANNOUNCE = 11012,
-    // Visit http://www.realmsofwarcraft.com/bb for forums and information
-    //
-    // End of prepatch
+    LANG_LOTTERY_ANNOUNCE_JACKPOT                 = 11010,
+    LANG_LOTTERY_ANNOUNCE_JACKPOT_M_PLAYERS       = 11011,
+    LANG_LOTTERY_ANNOUNCE                         = 11012,
     
     LANG_INSTANCE_LOGIN_GAMEMASTER_EXCEPTION      = 11010,
+	LANG_CREATURE_NO_INTERIOR_POINT_FOUND         = 11011,
+	LANG_CREATURE_MOVEMENT_NOT_BOUNDED            = 11012,
+	LANG_CREATURE_MOVEMENT_MAYBE_UNBOUNDED        = 11013,
 
-	LANG_INSTANCE_BIND_MISMATCH = 11014
+	LANG_INSTANCE_BIND_MISMATCH                   = 11014
 
 };
 #endif

@@ -502,7 +502,6 @@ public:
 
             DoMeleeAttackIfReady();
 
-            EnterEvadeIfOutOfCombatArea(diff);
         }
 
     private:

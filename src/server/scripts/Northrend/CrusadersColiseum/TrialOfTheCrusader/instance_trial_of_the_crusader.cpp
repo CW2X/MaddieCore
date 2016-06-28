@@ -22,6 +22,15 @@
 #include "Player.h"
 #include "TemporarySummon.h"
 
+AreaBoundary const* const mainBoundary = new CircleBoundary(Position(563.26f, 139.6f), 75.0);
+BossBoundaryData const boundaries = {
+	{ BOSS_BEASTS, new CircleBoundary(Position(563.26f, 139.6f), 75.0) },
+	{ BOSS_JARAXXUS, new CircleBoundary(Position(563.26f, 139.6f), 75.0) },
+	{ BOSS_CRUSADERS, new CircleBoundary(Position(563.26f, 139.6f), 75.0) },
+	{ BOSS_VALKIRIES, new CircleBoundary(Position(563.26f, 139.6f), 75.0) },
+	{ BOSS_ANUBARAK, new EllipseBoundary(Position(746.0f, 135.0f), 100.0, 75.0) }
+};
+
 class instance_trial_of_the_crusader : public InstanceMapScript
 {
     public:
@@ -33,6 +42,7 @@ class instance_trial_of_the_crusader : public InstanceMapScript
             {
                 SetHeaders(DataHeader);
                 SetBossNumber(MAX_ENCOUNTERS);
+				LoadBossBoundaries(boundaries);
                 TrialCounter = 50;
                 EventStage = 0;
                 NorthrendBeasts = NOT_STARTED;

@@ -697,37 +697,16 @@ enum RBACPermissions
 	RBAC_PERM_COMMAND_BARBERSHOP                             = 799,
     // 799 - 834 6.x only
     RBAC_PERM_COMMAND_DEBUG_LOADCELLS                        = 835,
+	RBAC_PERM_COMMAND_DEBUG_BOUNDARY                         = 836,
 
     // custom permissions 1000+
-
-	//Reload Item creature and creature addon tables
-	RBAC_PERM_COMMAND_RELOAD_ITEM_TEMPLATE = 1020,
-	RBAC_PERM_COMMAND_RELOAD_CREATURE_TEMPLATE_ADDON = 1021,
-	RBAC_PERM_COMMAND_RELOAD_GAMEOBJECT_TEMPLATE = 1022,
-
+    //Reload Item creature and creature addon tables
+	RBAC_PERM_COMMAND_RELOAD_ITEM_TEMPLATE                   = 1020,
+	RBAC_PERM_COMMAND_RELOAD_CREATURE_TEMPLATE_ADDON         = 1021,
+	RBAC_PERM_COMMAND_RELOAD_GAMEOBJECT_TEMPLATE             = 1022,
     RBAC_PERM_COMMAND_GOBJECT_SET_SCALE                      = 1398,
     RBAC_PERM_COMMAND_NPC_SET_SCALE                          = 1589,
 	RBAC_PERM_COMMAND_RELOAD_CHAT_FILTER                     = 1590,
-    // Prepatch by LordPsyan
-    // 01
-    // 02
-    // 03
-    // 04
-    // 05
-    // 06
-    // 07
-    // 08
-    // 09
-    // 10
-    // 11
-    // 12
-    // 13
-    // 14
-    // 15
-    // 16
-    // 17
-    // 18
-    // 19
     RBAC_PERM_COMMAND_WORLD_CHAT                             = 1015,
     // Visit http://www.realmsofwarcraft.com/bb for forums and information
     //

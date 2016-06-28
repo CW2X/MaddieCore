@@ -265,7 +265,7 @@ public:
 		{
 			if (!instance->CheckRequiredBosses(DATA_SINDRAGOSA, victim->ToPlayer()))
 			{
-				EnterEvadeMode();
+				EnterEvadeMode(EVADE_REASON_SEQUENCE_BREAK);
 				instance->DoCastSpellOnPlayers(LIGHT_S_HAMMER_TELEPORT);
 				return;
 			}
@@ -276,11 +276,11 @@ public:
 			Talk(SAY_AGGRO);
 		}
 
-		void EnterEvadeMode() override
+		void EnterEvadeMode(EvadeReason why) override
 		{
-			if (_isInAirPhase )
+			if (_isInAirPhase && why == EVADE_REASON_BOUNDARY)
 				return;
-			BossAI::EnterEvadeMode();
+			BossAI::EnterEvadeMode(why);
 		}
 
 		void JustReachedHome() override

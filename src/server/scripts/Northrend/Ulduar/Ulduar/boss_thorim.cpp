@@ -751,7 +751,7 @@ public:
 				}
 				case EVENT_CHECK_PLAYER:
 					if (!me->GetMap()->GetPlayersCountExceptGMs())
-						EnterEvadeMode();
+						EnterEvadeMode(EVADE_REASON_OTHER); //possibly wrong?
 					events.ScheduleEvent(EVENT_CHECK_PLAYER, 10000);
 					break;
 				case EVENT_OUTRO_1:
@@ -1222,13 +1222,13 @@ public:
 					colossus->AI()->DoAction(ACTION_ACTIVATE_RUNIC_SMASH);
 		}
 
-		void EnterEvadeMode() override
+		void EnterEvadeMode(EvadeReason why) override
 		{
 			// this should only happen if theres no alive player in the arena -> summon orb
 			// might be called by mind control release or controllers death?
 			if (Creature* thorim = ObjectAccessor::GetCreature(*me, _instance->GetGuidData(BOSS_THORIM)))
 				thorim->AI()->DoAction(ACTION_BERSERK);
-			ScriptedAI::EnterEvadeMode();
+			ScriptedAI::EnterEvadeMode(why);
 		}
 
 		void ExecuteEvent(uint32 eventId) override

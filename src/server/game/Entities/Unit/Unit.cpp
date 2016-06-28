@@ -12780,7 +12780,7 @@ void Unit::TauntFadeOut(Unit* taunter)
     if (m_ThreatManager.isThreatListEmpty())
     {
         if (creature->IsAIEnabled)
-            creature->AI()->EnterEvadeMode();
+			creature->AI()->EnterEvadeMode(CreatureAI::EVADE_REASON_NO_HOSTILES);
         return;
     }
 

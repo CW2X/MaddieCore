@@ -59,9 +59,9 @@ public:
 				me->GetMotionMaster()->MoveFollow(owner, PET_FOLLOW_DIST, me->GetFollowAngle());
 		}
 
-		void EnterEvadeMode() override
+		void EnterEvadeMode(EvadeReason why) override
 		{
-			if (!_EnterEvadeMode())
+			if (!_EnterEvadeMode(why))
 				return;
 
 			Reset();
@@ -129,7 +129,7 @@ public:
 			_events.ScheduleEvent(EVENT_FOCUS, 1000);
 		}
 
-		void EnterEvadeMode() override
+		void EnterEvadeMode(EvadeReason why) override
 		{
 			if (!_EnterEvadeMode())
 				return;

@@ -93,7 +93,8 @@ public:
             { "moveflags",     rbac::RBAC_PERM_COMMAND_DEBUG_MOVEFLAGS,     false, &HandleDebugMoveflagsCommand,        "" },
             { "transport",     rbac::RBAC_PERM_COMMAND_DEBUG_TRANSPORT,     false, &HandleDebugTransportCommand,        "" },
             { "loadcells",     rbac::RBAC_PERM_COMMAND_DEBUG_LOADCELLS,     false, &HandleDebugLoadCellsCommand,        "" },
-			{ "raidreset",     rbac::RBAC_PERM_COMMAND_INSTANCE_UNBIND,     false, &HandleDebugRaidResetCommand,        "" }
+			{ "raidreset",     rbac::RBAC_PERM_COMMAND_INSTANCE_UNBIND,     false, &HandleDebugRaidResetCommand,        "" },
+			{ "boundary", rbac::RBAC_PERM_COMMAND_DEBUG_BOUNDARY,           false, &HandleDebugBoundaryCommand,         "" }
         };
         static std::vector<ChatCommand> commandTable =
         {
@@ -1441,6 +1442,33 @@ static bool HandleDebugRaidResetCommand(ChatHandler* /*handler*/, char const* ar
 		sInstanceSaveMgr->ForceGlobalReset(mEntry->MapID, Difficulty(difficulty));
 	return true;
     }
+
+static bool HandleDebugBoundaryCommand(ChatHandler* handler, char const* args)
+{
+	Player* player = handler->GetSession()->GetPlayer();
+	if (!player)
+		return false;
+	Creature* target = handler->getSelectedCreature();
+	if (!target || !target->IsAIEnabled || !target->AI())
+	{
+		return false;
+	}
+
+	char* fill_str = args ? strtok((char*)args, " ") : nullptr;
+	char* duration_str = args ? strtok(nullptr, " ") : nullptr;
+
+	int duration = duration_str ? atoi(duration_str) : -1;
+	if (duration <= 0 || duration >= 30 * MINUTE) // arbitary upper limit
+		duration = 3 * MINUTE;
+
+	bool doFill = fill_str ? (stricmp(fill_str, "FILL") == 0) : false;
+
+	int32 errMsg = target->AI()->VisualizeBoundary(duration, player, doFill);
+	if (errMsg > 0)
+		handler->PSendSysMessage(errMsg);
+
+	  return true;
+   }
 };
 
 void AddSC_debug_commandscript()
