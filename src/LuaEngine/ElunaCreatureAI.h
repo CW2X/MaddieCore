@@ -125,10 +125,10 @@ struct ElunaCreatureAI : ScriptedAI
     }
 
     // Called for reaction at stopping attack at no attackers or targets
-    void EnterEvadeMode() override
+    void EnterEvadeMode(EvadeReason why) override
     {
         if (!sEluna->EnterEvadeMode(me))
-            ScriptedAI::EnterEvadeMode();
+            ScriptedAI::EnterEvadeMode(why);
     }
 
     // Called when the creature is target of hostile action: swing, hostile spell landed, fear/etc)

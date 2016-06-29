@@ -489,7 +489,7 @@ namespace LuaGlobalFunctions
         if (locale >= TOTAL_LOCALES)
             return luaL_argerror(L, 2, "valid LocaleConstant expected");
 
-        AreaTableEntry const* areaEntry = GetAreaEntryByAreaID(areaOrZoneId);
+		AreaTableEntry const* areaEntry = sAreaTableStore.LookupEntry(areaOrZoneId);
         if (!areaEntry)
             return luaL_argerror(L, 1, "valid Area or Zone ID expected");
 

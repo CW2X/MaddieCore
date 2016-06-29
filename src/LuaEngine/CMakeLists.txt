@@ -36,7 +36,7 @@ add_library(LuaEngine STATIC
   ${game_STAT_PCH_SRC}
 )
 
-if( ${CMAKE_PROJECT_NAME} STREQUAL "TrinityCore" )
+if( ${CMAKE_PROJECT_NAME} STREQUAL "MaddieCore" )
   include_directories(
     ${CMAKE_SOURCE_DIR}/dep/recastnavigation/Detour
     ${CMAKE_SOURCE_DIR}/dep/recastnavigation/Detour/Include
