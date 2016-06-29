@@ -880,8 +880,7 @@ void AuthSession::RealmListCallback(PreparedQueryResult result)
 		} while (result->NextRow());
 	}
 
-	// Update realm list if need
-	sRealmList->UpdateIfNeed();
+	
 
 	// Circle through realms in the RealmList and construct the return packet (including # of user characters in each realm)
 	ByteBuffer pkt;
