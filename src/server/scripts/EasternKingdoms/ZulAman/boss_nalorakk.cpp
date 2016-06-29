@@ -50,6 +50,26 @@ enum Yells
 	//  YELL_NALORAKK_EVENT2  = 13
 };
 
+enum Sounds
+{
+	SOUND_NALORAKK_WAVE1 = 12066,
+	SOUND_NALORAKK_WAVE2 = 12067,
+	SOUND_NALORAKK_WAVE3 = 12068,
+	SOUND_NALORAKK_WAVE4 = 12069,
+	SOUND_YELL_AGGRO = 12070,
+	SOUND_YELL_SURGE = 12071,
+	SOUND_YELL_TOBEAR = 12072,
+	SOUND_YELL_TOTROLL = 12073,
+	SOUND_YELL_BERSERK = 12074,
+	SOUND_YELL_KILL_ONE = 12075,
+	SOUND_YELL_KILL_TWO = 12076,
+	SOUND_YELL_DEATH = 12077
+
+	//  Not yet implemented
+	//  SOUND_NALORAKK_EVENT1 = 12078,
+	//  SOUND_NALORAKK_EVENT2 = 12079
+};
+
 enum Spells
 {
 	// Troll form
@@ -212,7 +232,8 @@ public:
 						case 0:
 							if (me->IsWithinDistInMap(who, 50))
 							{
-								Talk(YELL_NALORAKK_WAVE1);
+								Talk(YELL_NALORAKK_WAVE1, me);
+								DoPlaySoundToSet(me, SOUND_NALORAKK_WAVE1);
 
 								(*me).GetMotionMaster()->MovePoint(1, NalorakkWay[1][0], NalorakkWay[1][1], NalorakkWay[1][2]);
 								MovePhase++;
@@ -224,7 +245,8 @@ public:
 						case 2:
 							if (me->IsWithinDistInMap(who, 40))
 							{
-								Talk(YELL_NALORAKK_WAVE2);
+								Talk(YELL_NALORAKK_WAVE2, me);
+								DoPlaySoundToSet(me, SOUND_NALORAKK_WAVE2);
 
 								(*me).GetMotionMaster()->MovePoint(3, NalorakkWay[3][0], NalorakkWay[3][1], NalorakkWay[3][2]);
 								MovePhase++;
@@ -236,7 +258,8 @@ public:
 						case 5:
 							if (me->IsWithinDistInMap(who, 40))
 							{
-								Talk(YELL_NALORAKK_WAVE3);
+								Talk(YELL_NALORAKK_WAVE3, me);
+								DoPlaySoundToSet(me, SOUND_NALORAKK_WAVE3);
 
 								(*me).GetMotionMaster()->MovePoint(6, NalorakkWay[6][0], NalorakkWay[6][1], NalorakkWay[6][2]);
 								MovePhase++;
@@ -250,7 +273,8 @@ public:
 							{
 								SendAttacker(who);
 
-								Talk(YELL_NALORAKK_WAVE4);
+								Talk(YELL_NALORAKK_WAVE4, me);
+								DoPlaySoundToSet(me, SOUND_NALORAKK_WAVE4);
 
 								me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
 								me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
@@ -268,7 +292,8 @@ public:
 		{
 			instance->SetData(DATA_NALORAKKEVENT, IN_PROGRESS);
 
-			Talk(YELL_AGGRO);
+			Talk(YELL_AGGRO, me);
+			DoPlaySoundToSet(me, SOUND_YELL_AGGRO);
 			DoZoneInCombat();
 		}
 
@@ -276,7 +301,8 @@ public:
 		{
 			instance->SetData(DATA_NALORAKKEVENT, DONE);
 
-			Talk(YELL_DEATH);
+			Talk(YELL_DEATH, me);
+			DoPlaySoundToSet(me, SOUND_YELL_DEATH);
 		}
 
 		void KilledUnit(Unit* /*victim*/) override
@@ -284,10 +310,12 @@ public:
 			switch (urand(0, 1))
 			{
 			case 0:
-				Talk(YELL_KILL_ONE);
+				Talk(YELL_KILL_ONE, me);
+				DoPlaySoundToSet(me, SOUND_YELL_KILL_ONE);
 				break;
 			case 1:
-				Talk(YELL_KILL_TWO);
+				Talk(YELL_KILL_TWO, me);
+				DoPlaySoundToSet(me, SOUND_YELL_KILL_TWO);
 				break;
 			}
 		}
@@ -351,7 +379,8 @@ public:
 			if (Berserk_Timer <= diff)
 			{
 				DoCast(me, SPELL_BERSERK, true);
-				Talk(YELL_BERSERK);
+				Talk(YELL_BERSERK, me);
+				DoPlaySoundToSet(me, SOUND_YELL_BERSERK);
 				Berserk_Timer = 600000;
 			}
 			else Berserk_Timer -= diff;
@@ -361,7 +390,8 @@ public:
 				if (inBearForm)
 				{
 					// me->SetUInt32Value(UNIT_VIRTUAL_ITEM_SLOT_ID + 1, 5122);
-					Talk(YELL_SHIFTEDTOTROLL);
+					Talk(YELL_SHIFTEDTOTROLL, me);
+					DoPlaySoundToSet(me, SOUND_YELL_TOTROLL);
 					me->RemoveAurasDueToSpell(SPELL_BEARFORM);
 					Surge_Timer = urand(15000, 20000);
 					BrutalSwipe_Timer = urand(7000, 12000);
@@ -372,7 +402,8 @@ public:
 				else
 				{
 					// me->SetUInt32Value(UNIT_VIRTUAL_ITEM_SLOT_ID + 1, 0);
-					Talk(YELL_SHIFTEDTOBEAR);
+					Talk(YELL_SHIFTEDTOBEAR, me);
+					DoPlaySoundToSet(me, SOUND_YELL_TOBEAR);
 					DoCast(me, SPELL_BEARFORM, true);
 					LaceratingSlash_Timer = 2000; // dur 18s
 					RendFlesh_Timer = 3000;  // dur 5s
@@ -405,7 +436,8 @@ public:
 
 				if (Surge_Timer <= diff)
 				{
-					Talk(YELL_SURGE);
+					Talk(YELL_SURGE, me);
+					DoPlaySoundToSet(me, SOUND_YELL_SURGE);
 					Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 1, 45, true);
 					if (target)
 						DoCast(target, SPELL_SURGE);
