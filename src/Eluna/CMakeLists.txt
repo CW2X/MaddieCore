@@ -30,13 +30,13 @@ include_directories(
   ${OPENSSL_INCLUDE_DIR}
 )
 
-add_library(LuaEngine STATIC
+add_library(Eluna STATIC
   ${LuaEngine_STAT_SRCS}
   ${game_STAT_SRCS}
   ${game_STAT_PCH_SRC}
 )
 
-if( ${CMAKE_PROJECT_NAME} STREQUAL "TrinityCore" )
+if( ${CMAKE_PROJECT_NAME} STREQUAL "MaddieCore" )
   include_directories(
     ${CMAKE_SOURCE_DIR}/dep/recastnavigation/Detour
     ${CMAKE_SOURCE_DIR}/dep/recastnavigation/Detour/Include
@@ -144,22 +144,22 @@ if( ${CMAKE_PROJECT_NAME} STREQUAL "TrinityCore" )
 
   find_package(Boost COMPONENTS system filesystem REQUIRED)
 
-  target_link_libraries(LuaEngine
+  target_link_libraries(Eluna
     game
     ${Boost_LIBRARIES}
   )
 
-  add_dependencies(LuaEngine game)
+  add_dependencies(Eluna game)
   
   if( WIN32 )
     if ( MSVC )
-      add_custom_command(TARGET LuaEngine
+      add_custom_command(TARGET Eluna
         POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/bin/$(ConfigurationName)/lua_scripts/extensions/
         COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/extensions ${CMAKE_BINARY_DIR}/bin/$(ConfigurationName)/lua_scripts/extensions/
       )
     elseif ( MINGW )
-      add_custom_command(TARGET LuaEngine
+      add_custom_command(TARGET Eluna
         POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/bin/lua_scripts/extensions/
         COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/extensions ${CMAKE_BINARY_DIR}/bin/lua_scripts/extensions/
@@ -197,13 +197,13 @@ elseif( ${CMAKE_PROJECT_NAME} STREQUAL "MaNGOS" )
   
   if( WIN32 )
     if ( MSVC )
-      add_custom_command(TARGET LuaEngine
+      add_custom_command(TARGET Eluna
         POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/bin/$(ConfigurationName)/lua_scripts/extensions/"
         COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/extensions" "${CMAKE_BINARY_DIR}/bin/$(ConfigurationName)/lua_scripts/extensions/"
       )
     elseif ( MINGW )
-      add_custom_command(TARGET LuaEngine
+      add_custom_command(TARGET Eluna
         POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/bin/lua_scripts/extensions/"
         COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/extensions" "${CMAKE_BINARY_DIR}/bin/ua_scripts/extensions/"
