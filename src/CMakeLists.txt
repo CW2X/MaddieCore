@@ -20,5 +20,5 @@ if(TOOLS)
 endif(TOOLS)
 
 if ( ELUNA )
-  add_subdirectory(Eluna)
+  add_subdirectory(LuaEngine)
 endif(ELUNA)
