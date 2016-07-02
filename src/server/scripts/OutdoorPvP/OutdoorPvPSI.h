@@ -1,19 +1,19 @@
 /*
- * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the
- * Free Software Foundation; either version 2 of the License, or (at your
- * option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program. If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright (C) 2008-2016 TrinityCore <http://www.trinitycore.org/>
+*
+* This program is free software; you can redistribute it and/or modify it
+* under the terms of the GNU General Public License as published by the
+* Free Software Foundation; either version 2 of the License, or (at your
+* option) any later version.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+* more details.
+*
+* You should have received a copy of the GNU General Public License along
+* with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #ifndef OUTDOOR_PVP_SI_
 #define OUTDOOR_PVP_SI_
@@ -22,10 +22,10 @@
 
 enum OutdoorPvPSISpells
 {
-    SI_SILITHYST_FLAG_GO_SPELL = 29518,
-    SI_SILITHYST_FLAG = 29519,
-    SI_TRACES_OF_SILITHYST = 29534,
-    SI_CENARION_FAVOR = 30754
+	SI_SILITHYST_FLAG_GO_SPELL = 29518,
+	SI_SILITHYST_FLAG = 29519,
+	SI_TRACES_OF_SILITHYST = 29534,
+	SI_CENARION_FAVOR = 30754
 };
 
 const uint32 SI_MAX_RESOURCES = 200;
@@ -46,40 +46,40 @@ const uint32 SI_SILITHYST_MOUND = 181597;
 
 enum SI_WorldStates
 {
-    SI_GATHERED_A = 2313,
-    SI_GATHERED_H = 2314,
-    SI_SILITHYST_MAX = 2317
+	SI_GATHERED_A = 2313,
+	SI_GATHERED_H = 2314,
+	SI_SILITHYST_MAX = 2317
 };
 
 class OutdoorPvPSI : public OutdoorPvP
 {
-    public:
-        OutdoorPvPSI();
+public:
+	OutdoorPvPSI();
 
-        bool SetupOutdoorPvP();
+	bool SetupOutdoorPvP() override;
 
-        void HandlePlayerEnterZone(Player* player, uint32 zone);
-        void HandlePlayerLeaveZone(Player* player, uint32 zone);
+	void HandlePlayerEnterZone(Player* player, uint32 zone) override;
+	void HandlePlayerLeaveZone(Player* player, uint32 zone) override;
 
-        bool Update(uint32 diff);
+	bool Update(uint32 diff) override;
 
-        void FillInitialWorldStates(WorldPacket &data);
+	void FillInitialWorldStates(WorldPacket &data) override;
 
-        void SendRemoveWorldStates(Player* player);
+	void SendRemoveWorldStates(Player* player) override;
 
-        bool HandleAreaTrigger(Player* player, uint32 trigger);
+	bool HandleAreaTrigger(Player* player, uint32 trigger) override;
 
-        bool HandleDropFlag(Player* player, uint32 spellId);
+	bool HandleDropFlag(Player* player, uint32 spellId) override;
 
-        bool HandleCustomSpell(Player* player, uint32 spellId, GameObject* go);
+	bool HandleCustomSpell(Player* player, uint32 spellId, GameObject* go) override;
 
-        void UpdateWorldState();
+	void UpdateWorldState();
 
-    private:
-        uint32 m_Gathered_A;
-        uint32 m_Gathered_H;
+private:
+	uint32 m_Gathered_A;
+	uint32 m_Gathered_H;
 
-        uint32 m_LastController;
+	uint32 m_LastController;
 };
 
 #endif
