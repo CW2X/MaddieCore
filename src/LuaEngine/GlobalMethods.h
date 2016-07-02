@@ -1875,7 +1875,7 @@ namespace LuaGlobalFunctions
                 if (!Utf8ToUpperOnlyLatin(nameOrIP))
                     return 0;
 #else
-                if (!AccountMgr::normalizeString(nameOrIP))
+				if (!Utf8ToUpperOnlyLatin(nameOrIP))
                     return 0;
 #endif
                 break;
