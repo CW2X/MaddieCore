@@ -49,13 +49,6 @@ MaxPingTime = 30
 
 
 #
-#   Network.Threads
-#
-#
-Network.Threads = 1
-
-
-#
 #    RealmServerPort
 #        Description: TCP port to reach the auth server.
 #        Default:     3724
@@ -69,6 +62,13 @@ RealmServerPort = 3724
 #        Default:     "0.0.0.0" - (Bind to all IPs on the system)
 
 BindIP = "0.0.0.0"
+
+#
+#
+# Network.Threads
+#
+
+Network.Threads = 1
 
 #
 #    PidFile
@@ -161,7 +161,7 @@ BanExpiryCheckInterval = 60
 #                                                                           Unix/Linux)
 #        Default:     "127.0.0.1;3306;trinity;trinity;auth"
 
-LoginDatabaseInfo = "127.0.0.1;3306;trinity;trinity;auth"
+LoginDatabaseInfo = "127.0.0.1;3306;root;ascent;auth"
 
 #
 #    LoginDatabase.WorkerThreads
