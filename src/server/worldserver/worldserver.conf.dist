@@ -2390,21 +2390,6 @@ Battleground.RewardLoserHonorLast   = 5
 #
 #
 #
-# Battleground.PrematureFinishTimer
-
-
-Battleground.PrematureFinishTimer = 0
-
-#
-#
-#
-#Battleground.PremadeGroupWaitForMatch
-
-
-Battleground.PremadeGroupWaitForMatch = 1800000
-
-
-#
 ###################################################################################################
 
 ###################################################################################################
