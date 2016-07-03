@@ -748,10 +748,11 @@ class Creature : public Unit, public GridObject<Creature>, public MapObject
 
         //Formation var
         CreatureGroup* m_formation;
-        bool TriggerJustRespawned;
+		bool m_TriggerJustRespawned;
 
-        Spell const* _focusSpell;   ///> Locks the target during spell cast for proper facing
-		uint32 _focusDelay;
+		Spell const* m_focusSpell;   ///> Locks the target during spell cast for proper facing
+		uint32 m_focusDelay;
+		
 
         CreatureTextRepeatGroup m_textRepeat;
 };
