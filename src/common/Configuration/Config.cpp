@@ -92,7 +92,7 @@ bool ConfigMgr::GetBoolDefault(std::string const& name, bool def)
     {
         std::string val = _config.get<std::string>(ptree::path_type(name, '/'));
         val.erase(std::remove(val.begin(), val.end(), '"'), val.end());
-        return (val == "true" || val == "TRUE" || val == "yes" || val == "YES" || val == "1");
+		return (val == "1" || val == "true" || val == "TRUE" || val == "yes" || val == "YES");
     }
 	catch (boost::property_tree::ptree_bad_path)
     {
