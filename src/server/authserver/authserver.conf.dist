@@ -49,13 +49,6 @@ MaxPingTime = 30
 
 
 #
-#   Network.Threads
-#
-#
-Network.Threads = 1
-
-
-#
 #    RealmServerPort
 #        Description: TCP port to reach the auth server.
 #        Default:     3724
