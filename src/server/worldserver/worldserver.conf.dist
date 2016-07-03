@@ -2395,11 +2395,6 @@ Battleground.PrematureFinishTimer = 0
 
 Battleground.PremadeGroupWaitForMatch = 1800000
 
-#
-#
-# Arena.QueueAnnouncer.PlayerOnly
-#
-Arena.QueueAnnouncer.PlayerOnly = 0
 
 #
 ###################################################################################################
