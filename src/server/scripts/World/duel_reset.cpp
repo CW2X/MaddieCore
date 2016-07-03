@@ -108,7 +108,7 @@ class DuelResetScript : public PlayerScript
 				{
 					SpellHistory::Clock::time_point now = SpellHistory::Clock::now();
 					uint32 cooldownDuration = itr->second.CooldownEnd > now ? std::chrono::duration_cast<std::chrono::milliseconds>(itr->second.CooldownEnd - now).count() : 0;
-					SpellInfo const* spellInfo = sSpellMgr->EnsureSpellInfo(itr->first);
+					SpellInfo const* spellInfo = sSpellMgr->AssertSpellInfo(itr->first);
 					return spellInfo->RecoveryTime < 10 * MINUTE * IN_MILLISECONDS
 						&& spellInfo->CategoryRecoveryTime < 10 * MINUTE * IN_MILLISECONDS
 						&& !itr->second.OnHold
@@ -123,7 +123,7 @@ class DuelResetScript : public PlayerScript
 				player->GetSpellHistory()->ResetCooldowns([](SpellHistory::CooldownStorageType::iterator itr) -> bool
 
 				{
-					SpellInfo const* spellInfo = sSpellMgr->EnsureSpellInfo(itr->first);
+					SpellInfo const* spellInfo = sSpellMgr->AssertSpellInfo(itr->first);
 					return spellInfo->RecoveryTime < 10 * MINUTE * IN_MILLISECONDS
 						&& spellInfo->CategoryRecoveryTime < 10 * MINUTE * IN_MILLISECONDS
 						&& !itr->second.OnHold;
