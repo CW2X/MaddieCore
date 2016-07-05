@@ -1147,7 +1147,7 @@ class boss_aerial_command_unit : public CreatureScript
                     case DO_START_AERIAL:
                         me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_SELECTABLE);
                         me->SetReactState(REACT_AGGRESSIVE);
-
+						me->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);
                         events.SetPhase(PHASE_AERIAL_COMMAND_UNIT);
                         events.ScheduleEvent(EVENT_SUMMON_JUNK_BOT, 5000, 0, PHASE_AERIAL_COMMAND_UNIT);
                         events.ScheduleEvent(EVENT_SUMMON_ASSAULT_BOT, 9000, 0, PHASE_AERIAL_COMMAND_UNIT);
@@ -1157,14 +1157,17 @@ class boss_aerial_command_unit : public CreatureScript
                         me->CastStop();
                         me->AttackStop();
                         me->SetReactState(REACT_PASSIVE);
+						me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_DISABLE_MOVE);
                         me->GetMotionMaster()->MoveFall();
                         events.DelayEvents(23000);
                         break;
                     case DO_ENABLE_AERIAL:
                         me->SetReactState(REACT_AGGRESSIVE);
+						
                         break;
                     case DO_ASSEMBLED_COMBAT:
-                        me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_SELECTABLE);
+                        me->RemoveFlag(UNIT_FIELD_FLAGS,  UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_NOT_SELECTABLE);
+						
                         me->SetReactState(REACT_AGGRESSIVE);
                         me->SetStandState(UNIT_STAND_STATE_STAND);
                         events.SetPhase(PHASE_VOL7RON);
