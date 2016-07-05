@@ -66,6 +66,7 @@
 #ifdef ELUNA
 #include "LuaEngine.h"
 #include "ElunaEventMgr.h"
+#include "../Anticheat/AnticheatMgr.h"
 #endif
 
 #include <cmath>
@@ -12346,6 +12347,8 @@ void Unit::SetVisible(bool x)
 
 void Unit::UpdateSpeed(UnitMoveType mtype, bool forced)
 {
+	//if (this->ToPlayer())
+    //    sAnticheatMgr->DisableAnticheatDetection(this->ToPlayer());
     int32 main_speed_mod  = 0;
     float stack_bonus     = 1.0f;
     float non_stack_bonus = 1.0f;

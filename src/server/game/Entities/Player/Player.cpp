@@ -84,33 +84,10 @@
 #include "GameObjectAI.h"
 #ifdef ELUNA
 #include "LuaEngine.h"
+#include "../Anticheat/AnticheatMgr.h"
 #endif
-
 #include "Config.h"
-// Prepatch by LordPsyan
-// 61
-// 62
-// 63
-// 64
-// 65
-// 66
-// 67
-// 68
-// 69
-// 70
-// 71
-// 72
-// 73
-// 74
-// 75
-// 76
-// 77
-// 78
-// 79
-// 80
-// Visit http://www.realmsofwarcraft.com/bb for forums and information
-//
-// End of prepatch
+
 #define ZONE_UPDATE_INTERVAL (1*IN_MILLISECONDS)
 
 #define PLAYER_SKILL_INDEX(x)       (PLAYER_SKILL_INFO_1_1 + ((x)*3))
@@ -19485,6 +19462,12 @@ void Player::SaveToDB(bool create /*=false*/)
         _SaveStats(trans);
 
     CharacterDatabase.CommitTransaction(trans);
+
+	// we save the data here to prevent spamming
+	sAnticheatMgr->SavePlayerData(this);
+	
+   // in this way we prevent to spam the db by each report made!
+   // sAnticheatMgr->SavePlayerData(this);
 
     // save pet (hunter pet level and experience and all type pets health/mana).
     if (Pet* pet = GetPet())
