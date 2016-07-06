@@ -700,6 +700,13 @@ enum RBACPermissions
 	RBAC_PERM_COMMAND_DEBUG_BOUNDARY                         = 836,
 
     // custom permissions 1000+
+
+	//TrinityJail
+	RBAC_PERM_COMMAND_JAIL                                   = 900,
+	RBAC_PERM_COMMAND_JAIL_PLAYER                            = 901,
+	RBAC_PERM_COMMAND_JAIL_INFO                              = 902,
+	RBAC_PERM_COMMAND_JAIL_UN                                = 903,
+	RBAC_PERM_COMMAND_JAIL_RELOAD                            = 904,
     //Reload Item creature and creature addon tables
 	RBAC_PERM_COMMAND_RELOAD_ITEM_TEMPLATE                   = 1020,
 	RBAC_PERM_COMMAND_RELOAD_CREATURE_TEMPLATE_ADDON         = 1021,
@@ -708,9 +715,7 @@ enum RBACPermissions
     RBAC_PERM_COMMAND_NPC_SET_SCALE                          = 1589,
 	RBAC_PERM_COMMAND_RELOAD_CHAT_FILTER                     = 1590,
     RBAC_PERM_COMMAND_WORLD_CHAT                             = 1015,
-    // Visit http://www.realmsofwarcraft.com/bb for forums and information
-    //
-    // End of prepatch
+   
     RBAC_PERM_MAX
 };
 

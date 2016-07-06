@@ -1427,7 +1427,8 @@ void AddBattlegroundScripts()
 /* This is where custom scripts' loading functions should be declared. */
     // All In One NPC
     void AddSC_npc_all();
-// start02
+    // Jail
+	void AddSC_jail_commandscript();
 // start03
 // start04
 // start06
@@ -1520,8 +1521,8 @@ void AddSC_World_Chat();
 // start82
 // start83
 // start84
-    //Vas AutoBalance
-    void AddSC_VAS_AutoBalance();
+//Vas AutoBalance
+void AddSC_VAS_AutoBalance();
 // start86
 // start87
 // start88
@@ -1569,7 +1570,8 @@ void AddCustomScripts()
     /* This is where custom scripts should be added. */
     // All In One NPC
     AddSC_npc_all();
-// end02
+	// Jail
+	AddSC_jail_commandscript();
 // end03
 // end04
 // end06

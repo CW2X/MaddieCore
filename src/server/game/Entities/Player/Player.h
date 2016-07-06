@@ -1,4 +1,4 @@
-/*
+ /*
  * Copyright (C) 2008-2015 TrinityCore <http://www.trinitycore.org/>
  * Copyright (C) 2005-2009 MaNGOS <http://getmangos.com/>
  *
@@ -2102,6 +2102,29 @@ class Player : public Unit, public GridObject<Player>
         bool IsImmuneToEnvironmentalDamage();
         uint32 EnvironmentalDamage(EnviromentalDamage type, uint32 damage);
 
+		/*********************************************************/
+		/***          Jail by WarHead edited by spgm           ***/
+		/*********************************************************/
+		
+		       
+	    // Char datas...
+		bool m_jail_warning;
+		bool m_jail_amnestie;
+		bool m_jail_isjailed;           // Is this player jailed?
+		std::string m_jail_char;        // Name of jailed char
+		uint32 m_jail_guid;             // guid of the jailed char
+		uint32 m_jail_release;          // When is the player a free man/woman?
+		std::string m_jail_reason;      // Why was the char jailed?
+		uint32 m_jail_times;            // How often was the player jailed?
+		uint32 m_jail_amnestietime;
+		uint32 m_jail_gmacc;            // Used GM acc
+		std::string m_jail_gmchar;      // Used GM char
+		std::string m_jail_lasttime;    // Last jail time
+		uint32 m_jail_duration;         // Duration of the jail
+		// Load / save functions...
+		void _LoadJail(void);           // Loads the jail datas
+		void _SaveJail(void);           // Saves the jail datas
+
         /*********************************************************/
         /***               FLOOD FILTER SYSTEM                 ***/
         /*********************************************************/
@@ -2109,14 +2132,15 @@ class Player : public Unit, public GridObject<Player>
         void UpdateSpeakTime();
         bool CanSpeak() const;
         void ChangeSpeakTime(int utime);
-		         /*********************************************************/ 
-		        /***                 CHAT FILTER SYSTEM                ***/
-			   /*********************************************************/
+
+		/*********************************************************/ 
+        /***                 CHAT FILTER SYSTEM                ***/
+	    /*********************************************************/
 			
-			void SetLoggedOutWhilePunished(bool _true) { loggedOutWhilePunished = _true; }
+		void SetLoggedOutWhilePunished(bool _true) { loggedOutWhilePunished = _true; }
 		bool LoggedOutWhilePunished() { return loggedOutWhilePunished; }
 		void SetFreezeStunTimer(bool freeze, uint32 _timer) { freeze ? freezeTimer = _timer : stunTimer = _timer; }
-	 uint32 GetFreezeStunTimer(bool freeze) { return freeze ? freezeTimer : stunTimer; }
+	    uint32 GetFreezeStunTimer(bool freeze) { return freeze ? freezeTimer : stunTimer; }
 		
         /*********************************************************/
         /***                 VARIOUS SYSTEMS                   ***/
