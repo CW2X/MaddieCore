@@ -1429,7 +1429,8 @@ void AddBattlegroundScripts()
     void AddSC_npc_all();
     // Jail
 	void AddSC_jail_commandscript();
-// start03
+	//Fireworks on level
+	void AddSC_FireWorksOnLevelUp();
 // start04
 // start06
 // start07
@@ -1572,7 +1573,8 @@ void AddCustomScripts()
     AddSC_npc_all();
 	// Jail
 	AddSC_jail_commandscript();
-// end03
+	//Fireworks on level
+	AddSC_FireWorksOnLevelUp();
 // end04
 // end06
 // end07

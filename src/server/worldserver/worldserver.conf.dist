@@ -4132,6 +4132,13 @@ ProfessionNPC.UseTokens = 1
 ProfessionNPC.ItemEntryNum = 99999
 
 #
+#     FireWorksOnLevelUp
+#        Description: Players shoot a firework when reach level 80.
+#        Default:     0
+
+FireWorksOnLevelUp = 1
+
+#
 ###################################################################################################
 
 #
